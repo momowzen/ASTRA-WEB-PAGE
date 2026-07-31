@@ -11,29 +11,16 @@ export interface MemberProfile {
   level: number
   class?: string
   mainWeapon: string
-  helmet: string
-  chest: string
-  gloves: string
-  boots: string
-  accessory: string
+  subWeapon: string
+  armor: string
+  necklace: boolean
+  ring: boolean
+  earring: boolean
+  bracelet: boolean
+  belt: boolean
   notes: string
   createdAt: string
   updatedAt: string
-}
-
-export interface EquipmentSlot {
-  key: keyof EquipmentMap
-  label: string
-  icon: string
-}
-
-export type EquipmentMap = {
-  mainWeapon: string
-  helmet: string
-  chest: string
-  gloves: string
-  boots: string
-  accessory: string
 }
 
 export interface MemberFormData {
@@ -43,12 +30,31 @@ export interface MemberFormData {
   level: number
   class: string
   mainWeapon: string
-  helmet: string
-  chest: string
-  gloves: string
-  boots: string
-  accessory: string
+  subWeapon: string
+  armor: string
+  necklace: boolean
+  ring: boolean
+  earring: boolean
+  bracelet: boolean
+  belt: boolean
   notes: string
+}
+
+export type EquipmentMap = {
+  mainWeapon: string
+  subWeapon: string
+  armor: string
+  necklace: boolean
+  ring: boolean
+  earring: boolean
+  bracelet: boolean
+  belt: boolean
+}
+
+export interface EquipmentSlot {
+  key: keyof EquipmentMap
+  label: string
+  icon: string
 }
 
 export interface AuthUser {
@@ -66,3 +72,28 @@ export type MemberSortField =
   | 'updatedAt'
 
 export type SortDirection = 'asc' | 'desc'
+
+export const MAIN_WEAPON_OPTIONS = [
+  'Battle Staff',
+  'Staff',
+  'Dagger',
+  'Bow',
+  'Crossbow',
+  'Sword & Shield',
+  'Greatsword',
+  'Combat Shield',
+] as const
+
+export const SUB_WEAPON_OPTIONS = [
+  'Sword & Shield',
+  'Dagger',
+  'Gauntlets',
+  'Crossbow',
+  'Bow',
+  'Staff',
+  'Battle Staff',
+  'Greatsword',
+  'Combat Shield',
+] as const
+
+export const ARMOR_OPTIONS = ['Cloth', 'Leather', 'Plate'] as const

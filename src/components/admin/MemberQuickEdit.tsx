@@ -25,11 +25,13 @@ const initialFormData = (member: MemberProfile | null): MemberFormData => ({
   level: member?.level || 1,
   class: member?.class || '',
   mainWeapon: member?.mainWeapon || '',
-  helmet: member?.helmet || '',
-  chest: member?.chest || '',
-  gloves: member?.gloves || '',
-  boots: member?.boots || '',
-  accessory: member?.accessory || '',
+  subWeapon: member?.subWeapon || '',
+  armor: member?.armor || '',
+  necklace: member?.necklace ?? false,
+  ring: member?.ring ?? false,
+  earring: member?.earring ?? false,
+  bracelet: member?.bracelet ?? false,
+  belt: member?.belt ?? false,
   notes: member?.notes || '',
 })
 

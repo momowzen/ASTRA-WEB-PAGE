@@ -16,7 +16,11 @@ service cloud.firestore {
     }
 
     function isValidUserForUpdate(user) {
-      return user.keys().hasAll(['uid', 'role', 'ign', 'discordName', 'email', 'createdAt', 'updatedAt'])
+      return user.keys().hasAll(['uid', 'role', 'ign', 'discordName', 'email',
+        'mainWeapon', 'subWeapon', 'armor',
+        'necklace', 'ring', 'earring', 'bracelet', 'belt',
+        'combatPower', 'level', 'class', 'notes',
+        'createdAt', 'updatedAt'])
         && user.role is string;
     }
 

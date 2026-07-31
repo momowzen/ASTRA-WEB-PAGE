@@ -25,11 +25,13 @@ const createInitialFormData = (profile: MemberProfile): MemberFormData => ({
   level: profile.level,
   class: profile.class || '',
   mainWeapon: profile.mainWeapon,
-  helmet: profile.helmet,
-  chest: profile.chest,
-  gloves: profile.gloves,
-  boots: profile.boots,
-  accessory: profile.accessory,
+  subWeapon: profile.subWeapon,
+  armor: profile.armor,
+  necklace: profile.necklace ?? false,
+  ring: profile.ring ?? false,
+  earring: profile.earring ?? false,
+  bracelet: profile.bracelet ?? false,
+  belt: profile.belt ?? false,
   notes: profile.notes,
 })
 
@@ -46,11 +48,13 @@ export const ProfilePage = () => {
     level: 1,
     class: '',
     mainWeapon: '',
-    helmet: '',
-    chest: '',
-    gloves: '',
-    boots: '',
-    accessory: '',
+    subWeapon: '',
+    armor: '',
+    necklace: false,
+    ring: false,
+    earring: false,
+    bracelet: false,
+    belt: false,
     notes: '',
   })
 
@@ -272,13 +276,15 @@ export const ProfilePage = () => {
                       </p>
                     </div>
                   ) : (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                       <EquipmentSlot name="mainWeapon" label="Main Weapon" value={profile.mainWeapon} readOnly />
-                      <EquipmentSlot name="helmet" label="Helmet" value={profile.helmet} readOnly />
-                      <EquipmentSlot name="chest" label="Chest" value={profile.chest} readOnly />
-                      <EquipmentSlot name="gloves" label="Gloves" value={profile.gloves} readOnly />
-                      <EquipmentSlot name="boots" label="Boots" value={profile.boots} readOnly />
-                      <EquipmentSlot name="accessory" label="Accessory" value={profile.accessory} readOnly />
+                      <EquipmentSlot name="subWeapon" label="Sub Weapon" value={profile.subWeapon} readOnly />
+                      <EquipmentSlot name="armor" label="Armor" value={profile.armor} readOnly />
+                      <EquipmentSlot name="necklace" label="Necklace" value={profile.necklace} readOnly />
+                      <EquipmentSlot name="ring" label="Ring" value={profile.ring} readOnly />
+                      <EquipmentSlot name="earring" label="Earring" value={profile.earring} readOnly />
+                      <EquipmentSlot name="bracelet" label="Bracelet" value={profile.bracelet} readOnly />
+                      <EquipmentSlot name="belt" label="Belt" value={profile.belt} readOnly />
                     </div>
                   )}
                 </GlassCard>

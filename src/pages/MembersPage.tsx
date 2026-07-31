@@ -92,10 +92,20 @@ export const MembersPage = () => {
                       <span className="text-xs text-astra-muted uppercase tracking-wider">Class</span>
                       <span className="text-astra-text">{member.class || '—'}</span>
                     </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-astra-muted uppercase tracking-wider">Armor</span>
+                      <span className="text-astra-text text-sm truncate max-w-[120px]">{member.armor || '—'}</span>
+                    </div>
                     {member.mainWeapon && (
                       <div className="flex justify-between items-center">
                         <span className="text-xs text-astra-muted uppercase tracking-wider">Main Weapon</span>
                         <span className="text-astra-accent text-sm truncate max-w-[120px]">{member.mainWeapon}</span>
+                      </div>
+                    )}
+                    {member.subWeapon && (
+                      <div className="flex justify-between items-center">
+                        <span className="text-xs text-astra-muted uppercase tracking-wider">Sub Weapon</span>
+                        <span className="text-astra-text text-sm truncate max-w-[120px]">{member.subWeapon}</span>
                       </div>
                     )}
                   </div>
