@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="ASTRA - A premium MMORPG guild management portal." />
+    <meta name="theme-color" content="#05070F" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>ASTRA | Celestial Guild Portal</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script type="text/javascript">
+      // Restore route after GitHub Pages SPA redirect
+      (function () {
+        const redirect = sessionStorage.getItem('spa-redirect')
+        if (redirect) {
+          sessionStorage.removeItem('spa-redirect')
+          const basePath = '/ASTRA-WEB-PAGE/'
+          if (redirect !== basePath && redirect.startsWith(basePath)) {
+            const route = redirect.slice(basePath.length)
+            if (route) {
+              window.history.replaceState(null, '', basePath + route)
+            }
+          }
+        }
+      })()
+    </script>
+  </body>
+</html>

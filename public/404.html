@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>ASTRA | Celestial Guild Portal</title>
+    <script type="text/javascript">
+      // Single-page app redirect for GitHub Pages
+      // This file is served when a route is not found, allowing BrowserRouter to work.
+      const path = window.location.pathname
+      const basePath = '/ASTRA-WEB-PAGE/'
+      const search = window.location.search
+      const hash = window.location.hash
+      sessionStorage.setItem('spa-redirect', path + search + hash)
+      window.location.replace(basePath)
+    </script>
+  </head>
+  <body></body>
+</html>
