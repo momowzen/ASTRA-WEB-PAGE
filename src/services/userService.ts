@@ -90,7 +90,7 @@ export const getAllMembers = async (): Promise<MemberProfile[]> => {
   const q = query(collection(db, USERS_COLLECTION), orderBy('createdAt', 'desc'))
   const snapshot = await getDocs(q)
   return snapshot.docs.map((d) =>
-    profileConverter.fromFirestore({ data: d.data, id: d.id }),
+    profileConverter.fromFirestore({ data: () => d.data(), id: d.id }),
   )
 }
 
