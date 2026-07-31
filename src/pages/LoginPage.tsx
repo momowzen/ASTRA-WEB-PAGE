@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, Navigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Mail, Lock, Sparkles, AlertCircle } from 'lucide-react'
 import { ParticleBackground } from '../components/layout/ParticleBackground.tsx'
@@ -9,13 +9,17 @@ import { GlassCard } from '../components/ui/GlassCard.tsx'
 import { Input } from '../components/ui/Input.tsx'
 import { GlowButton } from '../components/ui/GlowButton.tsx'
 import { loginUser } from '../services/authService.ts'
+import { useAuth } from '../hooks/useAuth.ts'
 
 export const LoginPage = () => {
+  const { isAuthenticated } = useAuth()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+
+  if (isAuthenticated) return <Navigate to="/profile" replace />
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

@@ -20,7 +20,7 @@ const equipmentSlots: { key: keyof EquipmentMap; label: string; icon: typeof Swo
 export const EquipmentEditor = ({ formData, onChange }: EquipmentEditorProps) => {
   const handleSlotClick = (key: keyof EquipmentMap) => {
     const currentValue = formData[key]
-    const newValue = window.prompt(`Enter ${key}:`, currentValue) || currentValue
+    const newValue = window.prompt(`Enter ${key}:`, currentValue) ?? currentValue
     onChange({ ...formData, [key]: newValue })
   }
 

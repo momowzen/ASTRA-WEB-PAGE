@@ -8,7 +8,6 @@ import {
   deleteDoc,
   query,
   orderBy,
-  serverTimestamp,
 } from 'firebase/firestore'
 import { db } from '../firebase/config.ts'
 import type { MemberProfile, MemberFormData } from '../types/index.ts'
@@ -125,13 +124,3 @@ export const updateMemberAvatar = async (uid: string, avatarUrl: string): Promis
 export const deleteMember = async (uid: string): Promise<void> => {
   await deleteDoc(doc(db, USERS_COLLECTION, uid))
 }
-
-export const setAdminRole = async (uid: string, role: 'admin' | 'member'): Promise<void> => {
-  const docRef = doc(db, USERS_COLLECTION, uid)
-  await updateDoc(docRef, {
-    role,
-    updatedAt: new Date().toISOString(),
-  })
-}
-
-export const getServerTimestamp = () => serverTimestamp()

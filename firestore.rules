@@ -2,7 +2,6 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Helper functions
     function isAuthenticated() {
       return request.auth != null;
     }
@@ -16,16 +15,23 @@ service cloud.firestore {
       return isAuthenticated() && request.auth.uid == userId;
     }
 
-    function isValidUser(user) {
-      return user.keys().hasAll(['uid', 'role', 'ign', 'discordName', 'email', 'createdAt', 'updatedAt']);
+    function isValidUserForUpdate(user) {
+      let required = ['uid', 'role', 'ign', 'discordName', 'email', 'createdAt', 'updatedAt'];
+      if (!user.keys().hasAll(required)) {
+        return false;
+      }
+      return user.role is string;
     }
 
-    // Users collection
     match /users/{userId} {
       allow read: if isAuthenticated();
-      allow create: if isAuthenticated() && request.auth.uid == userId && isValidUser(request.resource.data);
-      allow update: if isAdmin() || (isOwner(userId) && isValidUser(request.resource.data));
-      allow delete: if isAdmin();
+      allow create: if isAuthenticated() && request.auth.uid == userId && request.resource.data.role == 'member';
+      allow update: if isAdmin() || (
+        isOwner(userId) &&
+        isValidUserForUpdate(request.resource.data) &&
+        request.resource.data.role == resource.data.role
+      );
+      allow delete: if isAdmin() && request.auth.uid != userId;
     }
   }
 }

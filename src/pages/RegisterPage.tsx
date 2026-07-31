@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, Navigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Mail, Lock, User as UserIcon, MessageCircle, Sparkles, AlertCircle } from 'lucide-react'
 import { ParticleBackground } from '../components/layout/ParticleBackground.tsx'
@@ -10,8 +10,10 @@ import { Input } from '../components/ui/Input.tsx'
 import { GlowButton } from '../components/ui/GlowButton.tsx'
 import { registerUser } from '../services/authService.ts'
 import { createMemberProfile } from '../services/userService.ts'
+import { useAuth } from '../hooks/useAuth.ts'
 
 export const RegisterPage = () => {
+  const { isAuthenticated } = useAuth()
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
     ign: '',
@@ -22,6 +24,8 @@ export const RegisterPage = () => {
   })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+
+  if (isAuthenticated) return <Navigate to="/profile" replace />
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
@@ -43,11 +47,16 @@ export const RegisterPage = () => {
     setLoading(true)
     try {
       const user = await registerUser(formData.email, formData.password, formData.ign)
-      await createMemberProfile(user.uid, {
-        ign: formData.ign,
-        discordName: formData.discordName,
-        email: formData.email,
-      })
+      try {
+        await createMemberProfile(user.uid, {
+          ign: formData.ign,
+          discordName: formData.discordName,
+          email: formData.email,
+        })
+      } catch (profileError) {
+        await user.delete()
+        throw new Error('Account created but profile setup failed. Please try again.')
+      }
       navigate('/profile')
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to register')

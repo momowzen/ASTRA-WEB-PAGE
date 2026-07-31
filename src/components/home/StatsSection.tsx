@@ -13,6 +13,7 @@ export const StatsSection = () => {
   useEffect(() => {
     getAllMembers()
       .then(setMembers)
+      .catch(() => {})
       .finally(() => setLoading(false))
   }, [])
 

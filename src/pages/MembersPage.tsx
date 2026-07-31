@@ -12,7 +12,7 @@ import { useState } from 'react'
 import { formatNumber } from '../utils/helpers.ts'
 
 export const MembersPage = () => {
-  const { members, loading } = useUsers()
+  const { members, loading, error } = useUsers()
   const [search, setSearch] = useState('')
   const debouncedSearch = useDebounce(search, 300)
 
@@ -61,6 +61,10 @@ export const MembersPage = () => {
 
           {loading ? (
             <LoadingSpinner message="Loading roster..." />
+          ) : error ? (
+            <div className="text-center py-16">
+              <p className="text-red-400">Failed to load members. Please try again.</p>
+            </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filtered.map((member, index) => (

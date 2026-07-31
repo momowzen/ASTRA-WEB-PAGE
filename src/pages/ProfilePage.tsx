@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Edit, Sparkles, Shield, Calendar, MessageCircle, X } from 'lucide-react'
@@ -34,9 +34,10 @@ const createInitialFormData = (profile: MemberProfile): MemberFormData => ({
 })
 
 export const ProfilePage = () => {
-  const { profile, isLoading, isAdmin, refreshProfile } = useAuth()
+  const { profile, isLoading, isAdmin, isAuthenticated, authError, refreshProfile } = useAuth()
   const [isEditing, setIsEditing] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [error, setError] = useState('')
   const [activeTab, setActiveTab] = useState<'overview' | 'equipment'>('overview')
   const [editForm, setEditForm] = useState<MemberFormData>({
     ign: '',
@@ -53,6 +54,12 @@ export const ProfilePage = () => {
     notes: '',
   })
 
+  useEffect(() => {
+    if (isAuthenticated && !profile && !isLoading && !authError) {
+      refreshProfile()
+    }
+  }, [isAuthenticated, profile, isLoading, authError, refreshProfile])
+
   const startEditing = () => {
     if (profile) {
       setEditForm(createInitialFormData(profile))
@@ -60,24 +67,25 @@ export const ProfilePage = () => {
     }
   }
 
-  const handleSave = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleSave = async (e?: React.FormEvent | React.MouseEvent<HTMLButtonElement>) => {
+    e?.preventDefault()
     if (!profile) return
     setSaving(true)
+    setError('')
     try {
       await updateMemberProfile(profile.uid, editForm)
       await refreshProfile()
       setIsEditing(false)
       setActiveTab('overview')
     } catch (err) {
-      console.error('Failed to save profile', err)
+      setError(err instanceof Error ? err.message : 'Failed to save profile.')
     } finally {
       setSaving(false)
     }
   }
 
   if (isLoading) return <LoadingSpinner fullScreen message="Summoning your profile..." />
-  if (!profile) {
+  if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-astra-bg">
         <ParticleBackground />
@@ -95,6 +103,32 @@ export const ProfilePage = () => {
       </div>
     )
   }
+  if (isAuthenticated && !profile) {
+    return (
+      <div className="min-h-screen bg-astra-bg">
+        <ParticleBackground />
+        <Navbar />
+        <main className="relative z-10 flex items-center justify-center min-h-[calc(100svh-80px)] px-4">
+          <GlassCard className="text-center max-w-md">
+            {authError ? (
+              <>
+                <h2 className="text-2xl font-bold text-astra-text font-display mb-4">Oops</h2>
+                <p className="text-astra-muted mb-6">{authError}</p>
+                <GlowButton onClick={refreshProfile} icon={<Edit className="w-4 h-4" />}>Retry</GlowButton>
+              </>
+            ) : (
+              <>
+                <LoadingSpinner message="Loading your profile..." />
+                <p className="text-astra-muted mt-4">Your profile is being prepared among the stars.</p>
+              </>
+            )}
+          </GlassCard>
+        </main>
+      </div>
+    )
+  }
+
+  if (!profile) return null
 
   return (
     <div className="min-h-screen bg-astra-bg">
@@ -120,6 +154,11 @@ export const ProfilePage = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2">
                 <GlassCard>
+                  {error && (
+                    <div className="mb-6 p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+                      {error}
+                    </div>
+                  )}
                   <ProfileForm
                     profile={profile}
                     formData={editForm}

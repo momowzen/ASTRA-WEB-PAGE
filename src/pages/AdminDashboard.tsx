@@ -11,7 +11,7 @@ import { StatsOverview } from '../components/admin/StatsOverview.tsx'
 import { MemberQuickEdit } from '../components/admin/MemberQuickEdit.tsx'
 import { useAuth } from '../hooks/useAuth.ts'
 import { useUsers } from '../hooks/useUsers.ts'
-import { deleteMember, updateMemberProfile, setAdminRole } from '../services/userService.ts'
+import { deleteMember, updateMemberProfile } from '../services/userService.ts'
 import { Modal } from '../components/ui/Modal.tsx'
 import { GlowButton } from '../components/ui/GlowButton.tsx'
 import type { MemberProfile, MemberFormData } from '../types/index.ts'
@@ -22,6 +22,8 @@ export const AdminDashboard = () => {
   const [editingMember, setEditingMember] = useState<MemberProfile | null>(null)
   const [deletingMember, setDeletingMember] = useState<MemberProfile | null>(null)
   const [saving, setSaving] = useState(false)
+  const [deleting, setDeleting] = useState(false)
+  const [actionError, setActionError] = useState('')
 
   if (authLoading) return <LoadingSpinner fullScreen message="Verifying access..." />
   if (!isAdmin || !profile) {
@@ -42,13 +44,13 @@ export const AdminDashboard = () => {
 
   const handleEdit = async (uid: string, formData: MemberFormData, role: 'admin' | 'member') => {
     setSaving(true)
+    setActionError('')
     try {
-      await updateMemberProfile(uid, formData)
-      await setAdminRole(uid, role)
+      await updateMemberProfile(uid, formData, role)
       await refetch()
       setEditingMember(null)
     } catch (err) {
-      console.error('Failed to update member', err)
+      setActionError(err instanceof Error ? err.message : 'Failed to update member.')
     } finally {
       setSaving(false)
     }
@@ -56,12 +58,16 @@ export const AdminDashboard = () => {
 
   const handleDelete = async () => {
     if (!deletingMember) return
+    setDeleting(true)
+    setActionError('')
     try {
       await deleteMember(deletingMember.uid)
       setMembers((prev) => prev.filter((m) => m.uid !== deletingMember.uid))
       setDeletingMember(null)
     } catch (err) {
-      console.error('Failed to delete member', err)
+      setActionError(err instanceof Error ? err.message : 'Failed to delete member.')
+    } finally {
+      setDeleting(false)
     }
   }
 
@@ -117,8 +123,11 @@ export const AdminDashboard = () => {
         isLoading={saving}
       />
 
-      <Modal isOpen={!!deletingMember} onClose={() => setDeletingMember(null)} title="Delete Member" size="sm">
+      <Modal isOpen={!!deletingMember} onClose={() => { if (!deleting) setDeletingMember(null) }} title="Delete Member" size="sm">
         <div className="space-y-6">
+          {actionError && (
+            <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">{actionError}</div>
+          )}
           <div className="flex items-center gap-4 p-4 rounded-lg bg-red-500/10 border border-red-500/20">
             <AlertTriangle className="w-8 h-8 text-red-400 flex-shrink-0" />
             <div>
@@ -129,10 +138,10 @@ export const AdminDashboard = () => {
             </div>
           </div>
           <div className="flex justify-end gap-3">
-            <GlowButton variant="outline" onClick={() => setDeletingMember(null)}>
+            <GlowButton variant="outline" onClick={() => setDeletingMember(null)} disabled={deleting}>
               Cancel
             </GlowButton>
-            <GlowButton variant="danger" onClick={handleDelete} icon={<Trash2 className="w-4 h-4" />}>
+            <GlowButton variant="danger" onClick={handleDelete} loading={deleting} icon={<Trash2 className="w-4 h-4" />}>
               Delete
             </GlowButton>
           </div>

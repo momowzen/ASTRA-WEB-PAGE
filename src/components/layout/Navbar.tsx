@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Sparkles, User, LogIn, UserPlus, Shield, Home, Users, Info } from 'lucide-react'
+import { Menu, X, Sparkles, User, LogIn, LogOut, UserPlus, Shield, Home, Users, Info } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth.ts'
 import { useScrollHeader } from '../../hooks/useScrollHeader.ts'
 import { signOut } from '../../services/authService.ts'
@@ -162,10 +162,10 @@ export const Navbar = () => {
               <div className="pt-4 border-t border-astra-primary/10 space-y-2">
                 {isAuthenticated ? (
                   <button
-                    onClick={handleSignOut}
+                    onClick={() => { handleSignOut(); setMobileOpen(false) }}
                     className="w-full text-left flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-red-400 hover:bg-red-500/10 transition-colors"
                   >
-                    <LogIn className="w-4 h-4" /> Sign Out
+                    <LogOut className="w-4 h-4" /> Sign Out
                   </button>
                 ) : (
                   <>
