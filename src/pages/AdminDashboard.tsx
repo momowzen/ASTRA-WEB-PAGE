@@ -18,7 +18,7 @@ import type { MemberProfile, MemberFormData } from '../types/index.ts'
 
 export const AdminDashboard = () => {
   const { profile, isLoading: authLoading, isAdmin } = useAuth()
-  const { members, loading, refetch, setMembers } = useUsers()
+  const { members, loading, error: fetchError, refetch, setMembers } = useUsers()
   const [editingMember, setEditingMember] = useState<MemberProfile | null>(null)
   const [deletingMember, setDeletingMember] = useState<MemberProfile | null>(null)
   const [saving, setSaving] = useState(false)
@@ -98,6 +98,11 @@ export const AdminDashboard = () => {
           <StatsOverview members={members} />
 
           <GlassCard className="gradient-border">
+            {fetchError && (
+              <div className="p-4 mb-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+                Error loading members: {fetchError}
+              </div>
+            )}
             {loading ? (
               <LoadingSpinner message="Loading guild roster..." />
             ) : (
