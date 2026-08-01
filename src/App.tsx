@@ -50,11 +50,11 @@ function App() {
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
-      <Route path="/members" element={<MembersPage />} />
       <Route path="/boss-tracker" element={<BossTrackerPage />} />
       <Route path="/hidden-class" element={<HiddenClassPage />} />
       <Route path="/about" element={<AboutPage />} />
       <Route element={<ProtectedRoute />}>
+        <Route path="/members" element={<MembersPage />} />
         <Route path="/profile" element={<ProfilePage />} />
       </Route>
       <Route element={<AdminRoute />}>

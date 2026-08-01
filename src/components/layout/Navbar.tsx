@@ -20,7 +20,7 @@ export const Navbar = () => {
 
   const navLinks = [
     { path: '/', label: 'Home', icon: Home },
-    { path: '/members', label: 'Members', icon: Users },
+    ...(isAuthenticated ? [{ path: '/members', label: 'Members', icon: Users }] : []),
     { path: '/boss-tracker', label: 'Boss Tracker', icon: ShieldCheck },
     { path: '/hidden-class', label: 'Hidden Class', icon: SparklesIcon },
     { path: '/about', label: 'About', icon: Info },
