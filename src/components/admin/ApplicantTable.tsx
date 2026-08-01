@@ -24,8 +24,8 @@ export const ApplicantTable = ({ applicants, onApprove, onReject, onEdit }: Appl
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-full">
-        <thead className="bg-astra-bg/80 sticky top-0">
+      <table className="w-full min-w-[900px]">
+        <thead className="bg-astra-bg/80 sticky top-0 z-10">
           <tr>
             <th className="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider text-astra-muted">Applicant</th>
             <th className="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider text-astra-muted">Level</th>
@@ -48,46 +48,46 @@ export const ApplicantTable = ({ applicants, onApprove, onReject, onEdit }: Appl
               <td className="px-4 py-4">
                 <div className="flex items-center gap-3">
                   <Avatar src={applicant.avatar} name={applicant.ign} size="sm" />
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="font-semibold text-astra-text">{applicant.ign}</span>
-                      <span className="px-2 py-0.5 rounded bg-astra-primary/10 text-astra-primary text-[10px] uppercase tracking-wider flex items-center gap-1">
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="font-semibold text-astra-text truncate max-w-[160px]">{applicant.ign}</span>
+                      <span className="px-2 py-0.5 rounded bg-astra-primary/10 text-astra-primary text-[10px] uppercase tracking-wider flex items-center gap-1 whitespace-nowrap">
                         <UserPlus className="w-3 h-3" /> Applicant
                       </span>
                     </div>
-                    <p className="text-xs text-astra-muted flex items-center gap-1">
-                      <MessageCircle className="w-3 h-3" /> {applicant.discordName}
+                    <p className="text-xs text-astra-muted flex items-center gap-1 truncate max-w-[200px]">
+                      <MessageCircle className="w-3 h-3 flex-shrink-0" /> {applicant.discordName}
                     </p>
                   </div>
                 </div>
               </td>
-              <td className="px-4 py-4 text-astra-text">
+              <td className="px-4 py-4 text-astra-text whitespace-nowrap">
                 <span className="flex items-center gap-1 text-sm">
                   <BarChart3 className="w-3 h-3 text-astra-muted" /> {applicant.level}
                 </span>
               </td>
-              <td className="px-4 py-4">
+              <td className="px-4 py-4 whitespace-nowrap">
                 <span className="text-astra-primary font-semibold font-display text-sm flex items-center gap-1">
                   <Gauge className="w-3 h-3 text-astra-muted" /> {formatNumber(applicant.combatPower || 0)}
                 </span>
               </td>
               <td className="px-4 py-4 text-sm text-astra-muted">
-                <span className="flex items-center gap-1">
-                  <Sword className="w-3 h-3 text-astra-muted" /> {applicant.mainWeapon || '—'}
+                <span className="flex items-center gap-1 truncate max-w-[120px] block">
+                  <Sword className="w-3 h-3 text-astra-muted flex-shrink-0" /> {applicant.mainWeapon || '—'}
                 </span>
               </td>
               <td className="px-4 py-4 text-sm text-astra-muted">
-                <span className="flex items-center gap-1">
-                  <Globe className="w-3 h-3 text-astra-muted" /> {applicant.nationality ? `${getCountryFlag(applicant.nationality)} ${applicant.nationality}` : '—'}
+                <span className="flex items-center gap-1 truncate max-w-[140px] block">
+                  <Globe className="w-3 h-3 text-astra-muted flex-shrink-0" /> {applicant.nationality ? `${getCountryFlag(applicant.nationality)} ${applicant.nationality}` : '—'}
                 </span>
               </td>
               <td className="px-4 py-4 text-sm text-astra-muted">
-                <span className="flex items-center gap-1">
-                  <Server className="w-3 h-3 text-astra-muted" /> {applicant.server || '—'}
+                <span className="flex items-center gap-1 truncate max-w-[120px] block">
+                  <Server className="w-3 h-3 text-astra-muted flex-shrink-0" /> {applicant.server || '—'}
                 </span>
               </td>
               <td className="px-4 py-4">
-                <div className="flex items-center justify-end gap-2">
+                <div className="flex items-center justify-end gap-2 flex-wrap">
                   <GlowButton
                     variant="outline"
                     size="sm"

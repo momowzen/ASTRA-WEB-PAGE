@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
 import { Users, Zap, TrendingUp, UserPlus } from 'lucide-react'
 import { StatCard } from '../ui/StatCard.tsx'
 import { AnimatedCounter } from '../ui/AnimatedCounter.tsx'
@@ -25,23 +24,16 @@ export const StatsSection = () => {
   const newestMember = totalMembers ? members[0]?.ign || '—' : '—'
 
   return (
-    <section className="relative py-24 overflow-hidden">
+    <section className="section overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-astra-primary/5 via-transparent to-astra-secondary/5 pointer-events-none" />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <span className="text-xs uppercase tracking-[0.3em] text-astra-primary font-semibold">Live Statistics</span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-astra-text mt-4 mb-6">
-            Guild Strength
-          </h2>
-          <p className="text-astra-muted max-w-2xl mx-auto text-lg">
+      <div className="section-inner relative z-10">
+        <div className="section-header">
+          <span className="section-eyebrow">Live Statistics</span>
+          <h2 className="section-title">Guild Strength</h2>
+          <p className="section-description">
             Real-time metrics that showcase the power and growth of ASTRA.
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <StatCard

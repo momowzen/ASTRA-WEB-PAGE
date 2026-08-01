@@ -35,7 +35,7 @@ export const UpcomingList = ({ lang, timers, limit = 8 }: UpcomingListProps) => 
         </span>
       </div>
 
-      <div className="flex-1 overflow-y-auto space-y-2 pr-1">
+      <div className="flex-1 overflow-y-auto space-y-2 pr-1 max-h-[420px]">
         {upcoming.length === 0 ? (
           <div className="h-full flex items-center justify-center">
             <p className="text-astra-muted text-center py-8">No upcoming spawns</p>
@@ -46,14 +46,14 @@ export const UpcomingList = ({ lang, timers, limit = 8 }: UpcomingListProps) => 
               key={boss.id}
               className="flex items-center justify-between p-3 rounded-xl bg-astra-surface/40 border border-astra-primary/10 hover:border-astra-primary/30 transition-colors"
             >
-              <div className="flex items-center gap-3">
-                <span className="text-sm font-bold text-astra-primary w-6">#{index + 1}</span>
-                <div>
-                  <p className="text-astra-text font-medium">{getBossName(boss, lang)}</p>
+              <div className="flex items-center gap-3 min-w-0">
+                <span className="text-sm font-bold text-astra-primary w-6 flex-shrink-0">#{index + 1}</span>
+                <div className="min-w-0">
+                  <p className="text-astra-text font-medium truncate">{getBossName(boss, lang)}</p>
                   <p className="text-xs text-astra-muted">Lv.{boss.lvl}</p>
                 </div>
               </div>
-              <div className="text-right">
+              <div className="text-right flex-shrink-0">
                 <p className="text-sm font-semibold text-white tabular-nums">{fmtT(time)}</p>
                 <p className="text-xs text-astra-muted flex items-center gap-1 justify-end">
                   <Calendar className="w-3 h-3" /> {fmtD(time)}

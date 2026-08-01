@@ -35,7 +35,7 @@ export const NextSpawn = ({ lang, timers }: NextSpawnProps) => {
         <div className="flex items-center gap-4">
           <div
             className={[
-              'w-16 h-16 rounded-xl flex items-center justify-center',
+              'w-16 h-16 rounded-xl flex items-center justify-center flex-shrink-0',
               isLive ? 'bg-red-500/20 animate-pulse' : 'bg-astra-primary/10',
             ].join(' ')}
           >
@@ -45,9 +45,9 @@ export const NextSpawn = ({ lang, timers }: NextSpawnProps) => {
               <Timer className="w-8 h-8 text-astra-primary" />
             )}
           </div>
-          <div>
+          <div className="min-w-0">
             <p className="text-sm text-astra-muted uppercase tracking-wider">Next Spawn</p>
-            <h2 className="text-3xl md:text-4xl font-bold text-astra-text font-display text-glow">
+            <h2 className="text-3xl md:text-4xl font-bold text-astra-text font-display text-glow truncate">
               {bossName}
             </h2>
             {next && (
@@ -58,7 +58,7 @@ export const NextSpawn = ({ lang, timers }: NextSpawnProps) => {
           </div>
         </div>
 
-        <div className="text-right">
+        <div className="text-right md:text-right text-left">
           {next ? (
             <>
               <div className="text-4xl md:text-5xl font-bold text-white font-display tabular-nums">
@@ -73,7 +73,6 @@ export const NextSpawn = ({ lang, timers }: NextSpawnProps) => {
           )}
         </div>
       </div>
-
     </motion.div>
   )
 }

@@ -1,7 +1,12 @@
 import { motion } from 'framer-motion'
 import { Sparkles } from 'lucide-react'
 
-export const LoadingSpinner = ({ fullScreen = false, message = 'Loading...' }) => {
+interface LoadingSpinnerProps {
+  fullScreen?: boolean
+  message?: string
+}
+
+export const LoadingSpinner = ({ fullScreen = false, message = 'Loading...' }: LoadingSpinnerProps) => {
   return (
     <div
       className={[
@@ -24,7 +29,7 @@ export const LoadingSpinner = ({ fullScreen = false, message = 'Loading...' }) =
           <Sparkles className="w-6 h-6 text-astra-accent" />
         </motion.div>
       </motion.div>
-      <p className="text-astra-muted animate-pulse">{message}</p>
+      <p className="text-astra-muted animate-pulse text-sm">{message}</p>
     </div>
   )
 }

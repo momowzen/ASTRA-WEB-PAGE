@@ -11,6 +11,15 @@ import { useDebounce } from '../hooks/useDebounce.ts'
 import { useState } from 'react'
 import { formatNumber } from '../utils/helpers.ts'
 import { getCountryFlag } from '../types/index.ts'
+import type { MemberProfile } from '../types/index.ts'
+
+const memberRows = (member: MemberProfile) => [
+  { label: 'Combat Power', value: formatNumber(member.combatPower || 0), valueClass: 'text-astra-primary font-bold font-display' },
+  { label: 'Level', value: member.level || 1, valueClass: 'text-astra-text' },
+  { label: 'Nationality', value: member.nationality ? `${getCountryFlag(member.nationality)} ${member.nationality}` : '—', valueClass: 'text-astra-text' },
+  { label: 'Server', value: member.server || '—', valueClass: 'text-astra-text' },
+  { label: 'Armor', value: member.armor || '—', valueClass: 'text-astra-text' },
+]
 
 export const MembersPage = () => {
   const { members, loading, error } = useUsers()
@@ -52,13 +61,13 @@ export const MembersPage = () => {
 
           <div className="max-w-md mx-auto mb-12">
             <div className="relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-astra-muted" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-astra-muted/70 pointer-events-none" />
               <input
                 type="text"
                 placeholder="Search members..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full bg-astra-bg/60 border border-astra-primary/20 rounded-xl text-astra-text placeholder:text-astra-muted/60 focus:border-astra-primary/60 focus:ring-2 focus:ring-astra-primary/20 transition-all outline-none pl-12 pr-4 py-4"
+                className="w-full bg-astra-bg/60 border border-astra-primary/20 rounded-xl text-astra-text placeholder:text-astra-muted/50 focus:border-astra-primary/60 focus:ring-2 focus:ring-astra-primary/20 transition-all outline-none pl-12 pr-4 h-12"
               />
             </div>
           </div>
@@ -72,55 +81,39 @@ export const MembersPage = () => {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filtered.map((member, index) => (
-                <GlassCard key={member.uid} delay={index * 0.05} className="group">
+                <GlassCard key={member.uid} delay={index * 0.05} className="group flex flex-col">
                   <div className="flex items-center gap-4 mb-6">
                     <Avatar src={member.avatar} name={member.ign} size="md" glow />
-                    <div>
-                      <h3 className="text-lg font-semibold text-astra-text font-display group-hover:text-astra-primary transition-colors">
+                    <div className="min-w-0">
+                      <h3 className="text-lg font-semibold text-astra-text font-display group-hover:text-astra-primary transition-colors truncate">
                         {member.ign}
                       </h3>
-                      <p className="text-xs text-astra-muted">{member.discordName}</p>
+                      <p className="text-xs text-astra-muted truncate">{member.discordName}</p>
                     </div>
                   </div>
 
-                  <div className="space-y-3 mb-6">
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs text-astra-muted uppercase tracking-wider">Combat Power</span>
-                      <span className="text-astra-primary font-bold font-display">{formatNumber(member.combatPower || 0)}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs text-astra-muted uppercase tracking-wider">Level</span>
-                      <span className="text-astra-text">{member.level || 1}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs text-astra-muted uppercase tracking-wider">Nationality</span>
-                      <span className="text-astra-text text-sm truncate max-w-[120px]">
-                        {member.nationality ? `${getCountryFlag(member.nationality)} ${member.nationality}` : '—'}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs text-astra-muted uppercase tracking-wider">Server</span>
-                      <span className="text-astra-text text-sm truncate max-w-[120px]">{member.server || '—'}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs text-astra-muted uppercase tracking-wider">Armor</span>
-                      <span className="text-astra-text text-sm truncate max-w-[120px]">{member.armor || '—'}</span>
-                    </div>
+                  <div className="space-y-3 mb-6 flex-1">
+                    {memberRows(member).map((row) => (
+                      <div key={row.label} className="flex justify-between items-center gap-2">
+                        <span className="text-xs text-astra-muted uppercase tracking-wider flex-shrink-0">{row.label}</span>
+                        <span className={['text-sm truncate text-right', row.valueClass].join(' ')}>{row.value}</span>
+                      </div>
+                    ))}
                     {member.mainWeapon && (
-                      <div className="flex justify-between items-center">
-                        <span className="text-xs text-astra-muted uppercase tracking-wider">Main Weapon</span>
-                        <span className="text-astra-accent text-sm truncate max-w-[120px]">{member.mainWeapon}</span>
+                      <div className="flex justify-between items-center gap-2">
+                        <span className="text-xs text-astra-muted uppercase tracking-wider flex-shrink-0">Main Weapon</span>
+                        <span className="text-astra-accent text-sm truncate text-right">{member.mainWeapon}</span>
                       </div>
                     )}
                     {member.subWeapon && (
-                      <div className="flex justify-between items-center">
-                        <span className="text-xs text-astra-muted uppercase tracking-wider">Sub Weapon</span>
-                        <span className="text-astra-text text-sm truncate max-w-[120px]">{member.subWeapon}</span>
+                      <div className="flex justify-between items-center gap-2">
+                        <span className="text-xs text-astra-muted uppercase tracking-wider flex-shrink-0">Sub Weapon</span>
+                        <span className="text-astra-text text-sm truncate text-right">{member.subWeapon}</span>
                       </div>
                     )}
                   </div>
 
-                  <div className="flex items-center justify-between pt-4 border-t border-astra-primary/10">
+                  <div className="flex items-center justify-between pt-4 border-t border-astra-primary/10 mt-auto">
                     <div className="flex items-center gap-1 text-xs text-astra-muted">
                       {member.role === 'admin' ? (
                         <span className="flex items-center gap-1 text-astra-accent">

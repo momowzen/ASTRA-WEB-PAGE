@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate, Navigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Mail, Lock, User as UserIcon, MessageCircle, Sparkles, AlertCircle, Sword, Server, Gauge, BarChart3 } from 'lucide-react'
+import { Mail, Lock, User as UserIcon, MessageCircle, Sparkles, AlertCircle, Sword, Server, Gauge, BarChart3, ChevronDown } from 'lucide-react'
 import { ParticleBackground } from '../components/layout/ParticleBackground.tsx'
 import { Navbar } from '../components/layout/Navbar.tsx'
 import { Footer } from '../components/layout/Footer.tsx'
@@ -113,7 +113,7 @@ export const RegisterPage = () => {
           transition={{ duration: 0.6 }}
           className="w-full max-w-2xl"
         >
-          <GlassCard glow className="gradient-border">
+          <GlassCard glow padding="lg">
             <div className="text-center mb-8">
               <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-astra-secondary to-astra-primary flex items-center justify-center mb-4 shadow-[0_0_30px_rgba(139,92,246,0.3)]">
                 <Sparkles className="w-8 h-8 text-white" />
@@ -126,10 +126,10 @@ export const RegisterPage = () => {
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mb-6 p-4 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center gap-3 text-red-400 text-sm"
+                className="mb-6 p-4 rounded-lg bg-red-500/10 border border-red-500/20 flex items-start gap-3 text-red-400 text-sm"
               >
-                <AlertCircle className="w-4 h-4 flex-shrink-0" />
-                {error}
+                <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                <span>{error}</span>
               </motion.div>
             )}
 
@@ -198,21 +198,25 @@ export const RegisterPage = () => {
               <div>
                 <label className="block text-sm font-medium text-astra-muted mb-2 tracking-wide">
                   Main Weapon Mastery
+                  <span className="text-astra-accent ml-1">*</span>
                 </label>
                 <div className="relative">
-                  <Sword className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-astra-muted" />
+                  <Sword className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-astra-muted/70 pointer-events-none" />
                   <select
                     name="mainWeapon"
                     value={formData.mainWeapon}
                     onChange={handleChange}
                     required
-                    className="w-full bg-astra-bg/60 border border-astra-primary/20 rounded-lg text-astra-text text-sm focus:border-astra-primary/60 focus:ring-2 focus:ring-astra-primary/20 transition-all outline-none pl-10 pr-4 py-3 appearance-none cursor-pointer"
+                    className="w-full bg-astra-bg/60 border border-astra-primary/20 rounded-lg text-astra-text text-sm focus:border-astra-primary/60 focus:ring-2 focus:ring-astra-primary/20 transition-all outline-none pl-11 pr-10 h-11 py-2 leading-tight appearance-none cursor-pointer"
                   >
                     <option value="">Select main weapon...</option>
                     {MAIN_WEAPON_OPTIONS.map((w) => (
                       <option key={w} value={w}>{w}</option>
                     ))}
                   </select>
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 text-astra-muted/70 pointer-events-none">
+                    <ChevronDown className="w-4 h-4" />
+                  </div>
                 </div>
               </div>
 

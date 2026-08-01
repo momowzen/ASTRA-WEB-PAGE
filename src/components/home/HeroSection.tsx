@@ -14,14 +14,14 @@ export const HeroSection = () => {
     const chars = titleRef.current.querySelectorAll('.char')
     gsap.fromTo(
       chars,
-      { opacity: 0, y: 50, rotateX: -90 },
+      { opacity: 0, y: 30, rotateX: -45 },
       {
         opacity: 1,
         y: 0,
         rotateX: 0,
         stagger: 0.05,
-        duration: 1,
-        ease: 'back.out(1.7)',
+        duration: 0.8,
+        ease: 'back.out(1.5)',
         delay: 0.3,
       },
     )
@@ -52,7 +52,7 @@ export const HeroSection = () => {
 
         <h1
           ref={titleRef}
-          className="text-7xl sm:text-8xl md:text-9xl lg:text-[12rem] font-bold font-display text-astra-text text-glow mb-6 leading-none tracking-wider"
+          className="text-7xl sm:text-8xl md:text-9xl font-bold font-display text-astra-text text-glow mb-6 leading-none tracking-wider"
         >
           {title.split('').map((char, i) => (
             <span key={i} className="char inline-block">

@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion'
 import { Sparkles, Target, Users, Trophy, Shield } from 'lucide-react'
 import { GlassCard } from '../ui/GlassCard.tsx'
 
@@ -27,34 +26,27 @@ export const AboutSection = () => {
   ]
 
   return (
-    <section className="relative py-24 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <div className="inline-flex items-center gap-2 text-astra-primary mb-4">
+    <section className="section">
+      <div className="section-inner">
+        <div className="section-header">
+          <div className="section-eyebrow">
             <Sparkles className="w-4 h-4" />
-            <span className="text-xs uppercase tracking-[0.3em] font-semibold">About ASTRA</span>
+            <span>About ASTRA</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-astra-text mb-6">
-            Born From The Cosmos
-          </h2>
-          <p className="text-astra-muted max-w-3xl mx-auto text-lg leading-relaxed">
+          <h2 className="section-title">Born From The Cosmos</h2>
+          <p className="section-description">
             ASTRA is more than a guild. We are a constellation of warriors, explorers, and strategists united by a single purpose: to dominate every challenge the game throws at us while building lasting friendships.
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, index) => (
-            <GlassCard key={feature.title} delay={index * 0.1} glow={index === 0}>
+            <GlassCard key={feature.title} delay={index * 0.1} glow={index === 0} className="flex flex-col">
               <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-astra-primary/20 to-astra-secondary/20 flex items-center justify-center mb-4 border border-astra-primary/20">
                 <feature.icon className="w-6 h-6 text-astra-primary" />
               </div>
               <h3 className="text-xl font-semibold text-astra-text mb-2 font-display">{feature.title}</h3>
-              <p className="text-sm text-astra-muted leading-relaxed">{feature.description}</p>
+              <p className="text-sm text-astra-muted leading-relaxed flex-1">{feature.description}</p>
             </GlassCard>
           ))}
         </div>

@@ -19,7 +19,7 @@ export const NotFoundPage = () => {
           transition={{ duration: 0.5 }}
           className="max-w-lg w-full text-center"
         >
-          <GlassCard glow className="gradient-border">
+          <GlassCard glow padding="lg">
             <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-astra-secondary to-astra-primary flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(139,92,246,0.3)]">
               <Sparkles className="w-10 h-10 text-white" />
             </div>

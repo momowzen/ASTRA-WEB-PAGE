@@ -13,14 +13,14 @@ export const HiddenClassPage = () => {
     <div className="min-h-screen bg-astra-bg">
       <ParticleBackground />
       <Navbar />
-      <main className="relative z-10 pt-28 pb-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <main className="relative z-10 pt-28 pb-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="mb-8"
+            className="mb-12"
           >
             <div className="flex items-center gap-3 mb-2">
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-astra-accent to-astra-primary flex items-center justify-center shadow-[0_0_20px_rgba(251,191,36,0.3)]">

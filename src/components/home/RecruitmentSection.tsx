@@ -12,10 +12,10 @@ export const RecruitmentSection = () => {
   ]
 
   return (
-    <section className="relative py-24 overflow-hidden">
+    <section className="section overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-b from-astra-secondary/10 to-transparent rounded-full blur-[100px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="section-inner relative z-10">
         <div className="glass rounded-3xl p-8 md:p-16 gradient-border relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-astra-primary/5 via-transparent to-astra-secondary/5 pointer-events-none" />
 
@@ -25,10 +25,8 @@ export const RecruitmentSection = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <span className="text-xs uppercase tracking-[0.3em] text-astra-accent font-semibold">Recruitment</span>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-astra-text mt-4 mb-6">
-                Join The Celestial Ranks
-              </h2>
+              <span className="section-eyebrow text-astra-accent">Recruitment</span>
+              <h2 className="section-title text-left mx-0 mt-4">Join The Celestial Ranks</h2>
               <p className="text-astra-muted text-lg mb-8 leading-relaxed">
                 ASTRA is recruiting dedicated players who want to push their limits, conquer endgame content, and become part of a guild that feels like home.
               </p>

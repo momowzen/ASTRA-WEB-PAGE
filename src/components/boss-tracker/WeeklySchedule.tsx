@@ -31,7 +31,7 @@ export const WeeklySchedule = ({ lang }: WeeklyScheduleProps) => {
             <div
               key={day.dayIndex}
               className={[
-                'rounded-xl border p-3 min-h-[120px]',
+                'rounded-xl border p-3 flex flex-col',
                 isToday
                   ? 'border-astra-primary/50 bg-astra-primary/10'
                   : 'border-astra-primary/10 bg-astra-surface/40',
@@ -45,10 +45,10 @@ export const WeeklySchedule = ({ lang }: WeeklyScheduleProps) => {
                   {day.name}
                 </span>
                 {isToday && (
-                  <span className="w-2 h-2 rounded-full bg-astra-primary animate-pulse" />
+                  <span className="w-2 h-2 rounded-full bg-astra-primary animate-pulse flex-shrink-0" />
                 )}
               </div>
-              <div className="space-y-2">
+              <div className="space-y-2 flex-1">
                 {day.events.length === 0 ? (
                   <p className="text-xs text-astra-muted/60 italic">No spawns</p>
                 ) : (

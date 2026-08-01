@@ -26,7 +26,7 @@ export const IntervalGrid = ({ lang, timers }: IntervalGridProps) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.2 }}
-      className="glass rounded-2xl p-6 gradient-border"
+      className="glass rounded-2xl p-6 gradient-border h-full"
     >
       <div className="flex items-center gap-2 mb-4">
         <Repeat className="w-5 h-5 text-astra-secondary" />
@@ -58,12 +58,12 @@ export const IntervalGrid = ({ lang, timers }: IntervalGridProps) => {
                 return (
                   <div
                     key={boss.id}
-                    className="flex items-center justify-between text-sm"
+                    className="flex items-center justify-between text-sm gap-2"
                   >
-                    <span className="text-astra-text">{getBossName(boss, lang)}</span>
+                    <span className="text-astra-text truncate">{getBossName(boss, lang)}</span>
                     <span
                       className={[
-                        'tabular-nums font-medium',
+                        'tabular-nums font-medium whitespace-nowrap flex-shrink-0',
                         active ? 'text-emerald-400' : 'text-astra-muted',
                       ].join(' ')}
                     >

@@ -17,9 +17,16 @@ export const StatCard = ({ label, value, icon, delay = 0, accent = 'primary' }: 
     purple: 'from-fuchsia-500/20 to-purple-500/5 border-fuchsia-500/20',
   }
 
+  const iconColors = {
+    primary: 'text-astra-primary',
+    secondary: 'text-astra-secondary',
+    accent: 'text-astra-accent',
+    purple: 'text-fuchsia-400',
+  }
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+      initial={{ opacity: 0, y: 20, scale: 0.96 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.5, delay }}
@@ -32,10 +39,10 @@ export const StatCard = ({ label, value, icon, delay = 0, accent = 'primary' }: 
     >
       <div className="relative z-10">
         <div className="flex items-center gap-2 mb-3">
-          {icon && <span className="text-astra-primary">{icon}</span>}
+          {icon && <span className={iconColors[accent]}>{icon}</span>}
           <p className="text-sm text-astra-muted uppercase tracking-wider">{label}</p>
         </div>
-        <div className="text-2xl md:text-3xl font-bold text-astra-text font-display">{value}</div>
+        <div className="text-2xl md:text-3xl font-bold text-astra-text font-display break-words">{value}</div>
       </div>
       <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-gradient-to-br from-astra-primary/10 to-transparent rounded-full blur-2xl" />
     </motion.div>

@@ -23,7 +23,7 @@ const slotIcons: Record<keyof EquipmentMap, typeof Sword> = {
 }
 
 const rarityStyles: Record<string, string> = {
-  common: 'border-slate-500/40 shadow-slate-500/10',
+  common: 'border-slate-500/30 shadow-slate-500/5',
   rare: 'border-astra-primary/50 shadow-astra-primary/20',
   epic: 'border-astra-secondary/60 shadow-astra-secondary/30',
   legendary: 'border-astra-accent/70 shadow-astra-accent/30',
@@ -52,21 +52,21 @@ export const EquipmentSlot = ({ name, label, value, rarity, onClick, readOnly = 
 
   return (
     <motion.div
-      whileHover={!readOnly ? { scale: 1.02, y: -2 } : undefined}
+      whileHover={!readOnly ? { scale: 1.02 } : undefined}
       whileTap={!readOnly ? { scale: 0.98 } : undefined}
       onClick={onClick}
       className={[
         'relative group flex flex-col items-center justify-center gap-2',
         'w-full min-h-[120px] rounded-xl border-2 bg-astra-bg/40 p-4',
-        'cursor-pointer transition-all duration-300',
+        'transition-all duration-300',
         isAccessory
           ? hasBoolValue
             ? 'border-astra-accent/80 shadow-[0_0_15px_rgba(251,191,36,0.3)] bg-astra-accent/5'
             : 'border-slate-500/20'
           : rarityStyles[finalRarity],
-        'shadow-[0_0_15px_rgba(0,0,0,0.3)]',
-        !hasStringValue && !hasBoolValue ? 'opacity-60' : '',
-        readOnly ? 'cursor-default' : '',
+        'shadow-[0_4px_12px_rgba(0,0,0,0.2)]',
+        !hasStringValue && !hasBoolValue ? 'opacity-70' : '',
+        readOnly ? 'cursor-default' : 'cursor-pointer',
       ].join(' ')}
     >
       {isAccessory ? (
@@ -97,10 +97,10 @@ export const EquipmentSlot = ({ name, label, value, rarity, onClick, readOnly = 
             finalRarity === 'mythic' ? 'bg-fuchsia-400/10' : '',
           ].join(' ')}
           />
-          <Icon className={['w-6 h-6 transition-colors', hasStringValue ? 'text-astra-primary' : 'text-astra-muted/40'].join(' ')} />
+          <Icon className={['w-6 h-6 transition-colors z-10', hasStringValue ? 'text-astra-primary' : 'text-astra-muted/40'].join(' ')} />
           <div className="text-center w-full z-10">
             <p className="text-[11px] uppercase tracking-wider text-astra-muted/70 mb-1">{label}</p>
-            <p className={['text-sm font-medium break-words leading-tight', hasStringValue ? 'text-astra-text' : 'text-astra-muted/50'].join(' ')}>
+            <p className={['text-sm font-medium break-words leading-tight line-clamp-2', hasStringValue ? 'text-astra-text' : 'text-astra-muted/50'].join(' ')}>
               {hasStringValue ? (value as string) : 'Empty'}
             </p>
           </div>

@@ -46,7 +46,7 @@ export const LoginPage = () => {
           transition={{ duration: 0.6 }}
           className="w-full max-w-md"
         >
-          <GlassCard glow className="gradient-border">
+          <GlassCard glow padding="lg">
             <div className="text-center mb-8">
               <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-astra-primary to-astra-secondary flex items-center justify-center mb-4 shadow-[0_0_30px_rgba(76,201,240,0.3)]">
                 <Sparkles className="w-8 h-8 text-white" />
@@ -59,10 +59,10 @@ export const LoginPage = () => {
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mb-6 p-4 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center gap-3 text-red-400 text-sm"
+                className="mb-6 p-4 rounded-lg bg-red-500/10 border border-red-500/20 flex items-start gap-3 text-red-400 text-sm"
               >
-                <AlertCircle className="w-4 h-4 flex-shrink-0" />
-                {error}
+                <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                <span>{error}</span>
               </motion.div>
             )}
 

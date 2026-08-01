@@ -30,27 +30,29 @@ export const Modal = ({ isOpen, onClose, title, children, size = 'md' }: ModalPr
         >
           <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            initial={{ opacity: 0, scale: 0.96, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            exit={{ opacity: 0, scale: 0.96, y: 16 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
             onClick={(e) => e.stopPropagation()}
             className={[
               'relative w-full glass-strong rounded-2xl shadow-2xl',
               'border border-astra-primary/20',
+              'max-h-[90vh] flex flex-col',
               sizes[size],
             ].join(' ')}
           >
             <div className="flex items-center justify-between p-6 border-b border-astra-primary/10">
-              <h3 className="text-xl font-semibold text-astra-text font-display">{title}</h3>
+              <h3 className="text-xl font-semibold text-astra-text font-display pr-4">{title}</h3>
               <button
                 onClick={onClose}
-                className="p-2 rounded-lg hover:bg-astra-primary/10 text-astra-muted hover:text-astra-primary transition-colors"
+                className="p-2 rounded-lg hover:bg-astra-primary/10 text-astra-muted hover:text-astra-primary transition-colors flex-shrink-0"
+                aria-label="Close"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <div className="p-6 max-h-[80vh] overflow-y-auto">{children}</div>
+            <div className="p-6 overflow-y-auto">{children}</div>
           </motion.div>
         </motion.div>
       )}

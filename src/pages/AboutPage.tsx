@@ -5,6 +5,7 @@ import { ParticleBackground } from '../components/layout/ParticleBackground.tsx'
 import { Navbar } from '../components/layout/Navbar.tsx'
 import { Footer } from '../components/layout/Footer.tsx'
 import { GlassCard } from '../components/ui/GlassCard.tsx'
+import { GlowButton } from '../components/ui/GlowButton.tsx'
 
 export const AboutPage = () => {
   const rules = [
@@ -66,7 +67,7 @@ export const AboutPage = () => {
                     className="flex items-start gap-3 text-astra-text"
                   >
                     <Sparkles className="w-4 h-4 text-astra-accent mt-1 flex-shrink-0" />
-                    {goal}
+                    <span>{goal}</span>
                   </motion.li>
                 ))}
               </ul>
@@ -91,7 +92,7 @@ export const AboutPage = () => {
                   >
                     <rule.icon className="w-5 h-5 text-astra-primary mb-2" />
                     <h3 className="font-semibold text-astra-text mb-1">{rule.title}</h3>
-                    <p className="text-sm text-astra-muted">{rule.desc}</p>
+                    <p className="text-sm text-astra-muted leading-relaxed">{rule.desc}</p>
                   </motion.div>
                 ))}
               </div>
@@ -104,11 +105,10 @@ export const AboutPage = () => {
             <p className="text-astra-muted max-w-2xl mx-auto mb-8">
               We are always looking for dedicated players who share our vision. If you are ready to commit, grow, and conquer together, ASTRA is waiting for you.
             </p>
-            <Link
-              to="/register"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-lg bg-gradient-to-r from-astra-primary to-astra-secondary text-white font-medium shadow-[0_0_30px_rgba(76,201,240,0.3)] hover:shadow-[0_0_40px_rgba(139,92,246,0.4)] transition-all"
-            >
-              <Sparkles className="w-5 h-5" /> Apply Now
+            <Link to="/register">
+              <GlowButton size="lg" icon={<Sparkles className="w-5 h-5" />}>
+                Apply Now
+              </GlowButton>
             </Link>
           </GlassCard>
         </div>

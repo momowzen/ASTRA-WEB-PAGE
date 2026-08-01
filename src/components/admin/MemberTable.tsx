@@ -109,20 +109,20 @@ export const MemberTable = ({ members, onEdit, onDelete, currentUserId, isAdmin 
   const roleBadge = (role: UserRole) => {
     if (role === 'admin') {
       return (
-        <span className="px-2 py-0.5 rounded bg-astra-accent/10 text-astra-accent text-[10px] uppercase tracking-wider flex items-center gap-1">
+        <span className="px-2 py-0.5 rounded bg-astra-accent/10 text-astra-accent text-[10px] uppercase tracking-wider flex items-center gap-1 whitespace-nowrap">
           <Shield className="w-3 h-3" /> Admin
         </span>
       )
     }
     if (role === 'applicant') {
       return (
-        <span className="px-2 py-0.5 rounded bg-astra-primary/10 text-astra-primary text-[10px] uppercase tracking-wider flex items-center gap-1">
+        <span className="px-2 py-0.5 rounded bg-astra-primary/10 text-astra-primary text-[10px] uppercase tracking-wider flex items-center gap-1 whitespace-nowrap">
           <UserPlus className="w-3 h-3" /> Applicant
         </span>
       )
     }
     return (
-      <span className="px-2 py-0.5 rounded bg-astra-secondary/10 text-astra-secondary text-[10px] uppercase tracking-wider flex items-center gap-1">
+      <span className="px-2 py-0.5 rounded bg-astra-secondary/10 text-astra-secondary text-[10px] uppercase tracking-wider flex items-center gap-1 whitespace-nowrap">
         <User className="w-3 h-3" /> Member
       </span>
     )
@@ -132,7 +132,7 @@ export const MemberTable = ({ members, onEdit, onDelete, currentUserId, isAdmin 
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
         <div className="relative w-full md:w-96">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-astra-muted" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-astra-muted/70 pointer-events-none" />
           <input
             type="text"
             placeholder="Search by IGN, Discord, nationality, server..."
@@ -141,10 +141,10 @@ export const MemberTable = ({ members, onEdit, onDelete, currentUserId, isAdmin 
               setSearch(e.target.value)
               setCurrentPage(1)
             }}
-            className="w-full bg-astra-bg/60 border border-astra-primary/20 rounded-lg text-astra-text placeholder:text-astra-muted/60 focus:border-astra-primary/60 focus:ring-2 focus:ring-astra-primary/20 transition-all outline-none pl-10 pr-4 py-3"
+            className="w-full bg-astra-bg/60 border border-astra-primary/20 rounded-lg text-astra-text placeholder:text-astra-muted/50 focus:border-astra-primary/60 focus:ring-2 focus:ring-astra-primary/20 transition-all outline-none pl-10 pr-4 h-10"
           />
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
           {(['all', 'admin', 'member', 'applicant'] as const).map((role) => (
             <button
               key={role}
@@ -153,7 +153,7 @@ export const MemberTable = ({ members, onEdit, onDelete, currentUserId, isAdmin 
                 setCurrentPage(1)
               }}
               className={[
-                'px-4 py-2 rounded-lg text-sm font-medium transition-all capitalize',
+                'px-4 h-9 rounded-lg text-sm font-medium transition-all capitalize',
                 filterRole === role
                   ? 'bg-astra-primary/10 text-astra-primary border border-astra-primary/30'
                   : 'bg-astra-bg/60 text-astra-muted border border-astra-primary/10 hover:border-astra-primary/30',
@@ -167,14 +167,14 @@ export const MemberTable = ({ members, onEdit, onDelete, currentUserId, isAdmin 
 
       <div className="glass rounded-2xl overflow-hidden border border-astra-primary/10">
         <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-astra-bg/80 sticky top-0">
+          <table className="w-full min-w-[800px]">
+            <thead className="bg-astra-bg/80 sticky top-0 z-10">
               <tr>
                 {[
                   { field: 'ign' as MemberSortField, label: 'Member', wide: true },
                   { field: 'combatPower' as MemberSortField, label: 'CP', wide: false },
                   { field: 'level' as MemberSortField, label: 'Lvl', wide: false },
-                  { field: 'mainWeapon' as MemberSortField, label: 'Main Weapon', wide: false },
+                  { field: 'mainWeapon' as MemberSortField, label: 'Weapon', wide: false },
                   { field: 'nationality' as MemberSortField, label: 'Nationality', wide: false },
                   { field: 'updatedAt' as MemberSortField, label: 'Updated', wide: false },
                 ].map((col) => (
@@ -183,7 +183,7 @@ export const MemberTable = ({ members, onEdit, onDelete, currentUserId, isAdmin 
                     onClick={() => handleSort(col.field)}
                     className={[
                       'px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider text-astra-muted cursor-pointer hover:text-astra-primary transition-colors select-none',
-                      col.wide ? 'min-w-[240px]' : '',
+                      col.wide ? 'min-w-[220px] w-[25%]' : '',
                     ].join(' ')}
                   >
                     <div className="flex items-center gap-1">
@@ -209,28 +209,30 @@ export const MemberTable = ({ members, onEdit, onDelete, currentUserId, isAdmin 
                     <td className="px-4 py-4">
                       <div className="flex items-center gap-3">
                         <Avatar src={member.avatar} name={member.ign} size="sm" />
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span className="font-semibold text-astra-text">{member.ign}</span>
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="font-semibold text-astra-text truncate max-w-[180px]">{member.ign}</span>
                             {roleBadge(member.role)}
                           </div>
-                          <p className="text-xs text-astra-muted">{member.discordName}</p>
+                          <p className="text-xs text-astra-muted truncate max-w-[200px]">{member.discordName}</p>
                         </div>
                       </div>
                     </td>
                     <td className="px-4 py-4">
-                      <span className="text-astra-primary font-semibold font-display">{formatNumber(member.combatPower || 0)}</span>
+                      <span className="text-astra-primary font-semibold font-display whitespace-nowrap">{formatNumber(member.combatPower || 0)}</span>
                     </td>
-                    <td className="px-4 py-4 text-astra-text">{member.level || 1}</td>
+                    <td className="px-4 py-4 text-astra-text whitespace-nowrap">{member.level || 1}</td>
                     <td className="px-4 py-4">
-                      <span className="text-sm text-astra-muted">{member.mainWeapon || '—'}</span>
+                      <span className="text-sm text-astra-muted truncate max-w-[120px] block">{member.mainWeapon || '—'}</span>
                     </td>
                     <td className="px-4 py-4">
-                      <span className="text-sm text-astra-muted">{member.nationality ? `${getCountryFlag(member.nationality)} ${member.nationality}` : '—'}</span>
+                      <span className="text-sm text-astra-muted truncate max-w-[140px] block">
+                        {member.nationality ? `${getCountryFlag(member.nationality)} ${member.nationality}` : '—'}
+                      </span>
                     </td>
-                    <td className="px-4 py-4 text-sm text-astra-muted">{formatDate(member.updatedAt)}</td>
+                    <td className="px-4 py-4 text-sm text-astra-muted whitespace-nowrap">{formatDate(member.updatedAt)}</td>
                     <td className="px-4 py-4">
-                      <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity md:opacity-100">
                         <GlowButton
                           variant="outline"
                           size="sm"
@@ -264,7 +266,7 @@ export const MemberTable = ({ members, onEdit, onDelete, currentUserId, isAdmin 
           </div>
         )}
 
-        <div className="flex items-center justify-between px-4 py-4 border-t border-astra-primary/10 bg-astra-bg/40">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-4 py-4 border-t border-astra-primary/10 bg-astra-bg/40">
           <p className="text-sm text-astra-muted">
             Showing {filtered.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0} to{' '}
             {Math.min(currentPage * itemsPerPage, filtered.length)} of {filtered.length} members
@@ -273,17 +275,17 @@ export const MemberTable = ({ members, onEdit, onDelete, currentUserId, isAdmin 
             <button
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
               disabled={currentPage === 1}
-              className="px-3 py-1.5 rounded-lg bg-astra-bg/60 border border-astra-primary/10 text-sm text-astra-muted hover:text-astra-text disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className="h-9 px-3 rounded-lg bg-astra-bg/60 border border-astra-primary/10 text-sm text-astra-muted hover:text-astra-text disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
               Previous
             </button>
-            <span className="text-sm text-astra-muted px-2">
+            <span className="text-sm text-astra-muted px-2 min-w-[60px] text-center">
               {currentPage} / {totalPages}
             </span>
             <button
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
               disabled={currentPage === totalPages}
-              className="px-3 py-1.5 rounded-lg bg-astra-bg/60 border border-astra-primary/10 text-sm text-astra-muted hover:text-astra-text disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className="h-9 px-3 rounded-lg bg-astra-bg/60 border border-astra-primary/10 text-sm text-astra-muted hover:text-astra-text disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
               Next
             </button>

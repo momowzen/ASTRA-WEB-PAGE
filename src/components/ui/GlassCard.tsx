@@ -7,9 +7,17 @@ interface GlassCardProps {
   hover?: boolean
   glow?: boolean
   delay?: number
+  padding?: 'none' | 'sm' | 'md' | 'lg'
 }
 
-export const GlassCard = ({ children, className = '', hover = true, glow = false, delay = 0 }: GlassCardProps) => {
+export const GlassCard = ({ children, className = '', hover = true, glow = false, delay = 0, padding = 'md' }: GlassCardProps) => {
+  const paddings = {
+    none: '',
+    sm: 'p-4',
+    md: 'p-6',
+    lg: 'p-8',
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -19,14 +27,15 @@ export const GlassCard = ({ children, className = '', hover = true, glow = false
       whileHover={
         hover
           ? {
-              y: -6,
-              boxShadow: '0 20px 40px rgba(76, 201, 240, 0.15)',
+              y: -4,
+              boxShadow: '0 12px 36px rgba(0, 0, 0, 0.28)',
             }
           : undefined
       }
       className={[
-        'glass rounded-2xl p-6 relative overflow-hidden',
-        glow ? 'shadow-[0_0_30px_rgba(139,92,246,0.15)]' : '',
+        'glass rounded-2xl relative overflow-hidden',
+        paddings[padding],
+        glow ? 'shadow-[0_0_30px_rgba(139,92,246,0.12)]' : '',
         className,
       ].join(' ')}
     >

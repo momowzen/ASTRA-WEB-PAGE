@@ -35,6 +35,19 @@ const initialFormData = (member: MemberProfile | null): MemberFormData => ({
   notes: member?.notes || '',
 })
 
+const roleButtonClass = (active: boolean, color: 'primary' | 'secondary' | 'accent') => {
+  const activeClasses = {
+    primary: 'bg-astra-primary/10 border-astra-primary text-astra-primary',
+    secondary: 'bg-astra-secondary/10 border-astra-secondary text-astra-secondary',
+    accent: 'bg-astra-accent/10 border-astra-accent text-astra-accent',
+  }
+  const inactiveClasses = 'bg-astra-bg/60 border-astra-primary/10 text-astra-muted hover:text-astra-text'
+  return [
+    'px-4 h-11 rounded-lg border text-sm font-medium transition-colors flex items-center justify-center gap-2',
+    active ? activeClasses[color] : inactiveClasses,
+  ].join(' ')
+}
+
 export const MemberQuickEdit = ({ member, isOpen, onClose, onSave, isAdmin, isLoading }: MemberQuickEditProps) => {
   const [formData, setFormData] = useState<MemberFormData>(initialFormData(member))
   const [role, setRole] = useState<UserRole>('member')
@@ -67,14 +80,14 @@ export const MemberQuickEdit = ({ member, isOpen, onClose, onSave, isAdmin, isLo
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="flex flex-col sm:flex-row items-center gap-6">
           <Avatar src={member.avatar} name={formData.ign} size="lg" glow />
-          <div className="text-center sm:text-left">
-            <h3 className="text-2xl font-bold text-astra-text font-display">{formData.ign}</h3>
-            <p className="text-astra-muted text-sm">{member.email}</p>
+          <div className="text-center sm:text-left min-w-0">
+            <h3 className="text-2xl font-bold text-astra-text font-display truncate">{formData.ign}</h3>
+            <p className="text-astra-muted text-sm truncate">{member.email}</p>
             <p className="text-astra-primary text-xs mt-1 uppercase tracking-wider">{member.discordName}</p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <Input label="In-Game Name" name="ign" value={formData.ign} onChange={handleChange} required />
           <Input label="Discord Name" name="discordName" value={formData.discordName} onChange={handleChange} required />
           <Input label="Combat Power" name="combatPower" type="number" value={formData.combatPower} onChange={handleChange} required />
@@ -91,36 +104,21 @@ export const MemberQuickEdit = ({ member, isOpen, onClose, onSave, isAdmin, isLo
                 <button
                   type="button"
                   onClick={() => setRole('applicant')}
-                  className={[
-                    'px-4 py-3 rounded-lg border text-sm font-medium transition-colors flex items-center justify-center gap-2',
-                    role === 'applicant'
-                      ? 'bg-astra-primary/10 border-astra-primary text-astra-primary'
-                      : 'bg-astra-bg/60 border-astra-primary/10 text-astra-muted hover:text-astra-text',
-                  ].join(' ')}
+                  className={roleButtonClass(role === 'applicant', 'primary')}
                 >
                   <UserPlus className="w-4 h-4" /> Applicant
                 </button>
                 <button
                   type="button"
                   onClick={() => setRole('member')}
-                  className={[
-                    'px-4 py-3 rounded-lg border text-sm font-medium transition-colors flex items-center justify-center gap-2',
-                    role === 'member'
-                      ? 'bg-astra-primary/10 border-astra-primary text-astra-primary'
-                      : 'bg-astra-bg/60 border-astra-primary/10 text-astra-muted hover:text-astra-text',
-                  ].join(' ')}
+                  className={roleButtonClass(role === 'member', 'secondary')}
                 >
                   <User className="w-4 h-4" /> Member
                 </button>
                 <button
                   type="button"
                   onClick={() => setRole('admin')}
-                  className={[
-                    'px-4 py-3 rounded-lg border text-sm font-medium transition-colors flex items-center justify-center gap-2',
-                    role === 'admin'
-                      ? 'bg-astra-accent/10 border-astra-accent text-astra-accent'
-                      : 'bg-astra-bg/60 border-astra-primary/10 text-astra-muted hover:text-astra-text',
-                  ].join(' ')}
+                  className={roleButtonClass(role === 'admin', 'accent')}
                 >
                   <Crown className="w-4 h-4" /> Admin
                 </button>
@@ -142,7 +140,7 @@ export const MemberQuickEdit = ({ member, isOpen, onClose, onSave, isAdmin, isLo
           />
         </div>
 
-        <div className="flex justify-end gap-3 pt-4">
+        <div className="flex justify-end gap-3 pt-4 border-t border-astra-primary/10">
           <GlowButton type="button" variant="outline" onClick={onClose} icon={<X className="w-4 h-4" />}>
             Cancel
           </GlowButton>

@@ -5,12 +5,12 @@ import { Sparkles, Globe, X, MessageCircle, Heart } from 'lucide-react'
 export const Footer = () => {
   return (
     <footer className="relative mt-auto border-t border-astra-primary/10 bg-astra-bg/60 backdrop-blur-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 mb-8">
           <div>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-astra-primary to-astra-secondary flex items-center justify-center">
-                <Sparkles className="w-4 h-4 text-white" />
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-astra-primary to-astra-secondary flex items-center justify-center">
+                <Sparkles className="w-5 h-5 text-white" />
               </div>
               <h3 className="text-lg font-bold font-display text-astra-text">ASTRA</h3>
             </div>
@@ -21,11 +21,11 @@ export const Footer = () => {
 
           <div>
             <h4 className="text-sm font-semibold text-astra-text uppercase tracking-wider mb-4">Portal</h4>
-            <ul className="space-y-2">
+            <ul className="space-y-3">
               {[
                 { label: 'Home', path: '/' },
                 { label: 'Members', path: '/members' },
-                { label: 'Profile', path: '/profile' },
+                { label: 'Boss Tracker', path: '/boss-tracker' },
                 { label: 'About', path: '/about' },
               ].map((item) => (
                 <li key={item.path}>
@@ -47,7 +47,7 @@ export const Footer = () => {
                 <motion.a
                   key={i}
                   href="#"
-                  whileHover={{ scale: 1.1, y: -2 }}
+                  whileHover={{ scale: 1.08, y: -2 }}
                   className="w-10 h-10 rounded-lg glass flex items-center justify-center text-astra-muted hover:text-astra-primary hover:border-astra-primary/30 transition-colors"
                 >
                   <Icon className="w-4 h-4" />

@@ -122,10 +122,12 @@ export const AdminDashboard = () => {
 
           {applicants.length > 0 && (
             <GlassCard className="gradient-border mb-8">
-              <div className="flex items-center gap-2 mb-4">
-                <UserPlus className="w-5 h-5 text-astra-primary" />
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-lg bg-astra-primary/10 flex items-center justify-center border border-astra-primary/20">
+                  <UserPlus className="w-5 h-5 text-astra-primary" />
+                </div>
                 <h2 className="text-lg font-bold text-astra-text font-display">Pending Applications</h2>
-                <span className="ml-auto text-xs text-astra-muted bg-astra-primary/10 px-2 py-1 rounded-full">
+                <span className="ml-auto text-xs text-astra-muted bg-astra-primary/10 px-3 py-1 rounded-full">
                   {applicants.length}
                 </span>
               </div>
@@ -148,8 +150,10 @@ export const AdminDashboard = () => {
           )}
 
           <GlassCard className="gradient-border">
-            <div className="flex items-center gap-2 mb-4">
-              <Users className="w-5 h-5 text-astra-primary" />
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-lg bg-astra-secondary/10 flex items-center justify-center border border-astra-secondary/20">
+                <Users className="w-5 h-5 text-astra-secondary" />
+              </div>
               <h2 className="text-lg font-bold text-astra-text font-display">Guild Roster</h2>
             </div>
             {fetchError && (
@@ -187,11 +191,11 @@ export const AdminDashboard = () => {
           {actionError && (
             <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">{actionError}</div>
           )}
-          <div className="flex items-center gap-4 p-4 rounded-lg bg-red-500/10 border border-red-500/20">
-            <AlertTriangle className="w-8 h-8 text-red-400 flex-shrink-0" />
+          <div className="flex items-start gap-4 p-4 rounded-lg bg-red-500/10 border border-red-500/20">
+            <AlertTriangle className="w-8 h-8 text-red-400 flex-shrink-0 mt-0.5" />
             <div>
               <p className="text-astra-text font-medium">Are you sure?</p>
-              <p className="text-sm text-astra-muted">
+              <p className="text-sm text-astra-muted mt-1">
                 {deletingMember?.role === 'applicant'
                   ? `This will reject ${deletingMember?.ign}'s application and remove their account data.`
                   : `This will permanently delete ${deletingMember?.ign} from the guild roster.`}

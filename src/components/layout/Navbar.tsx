@@ -41,24 +41,24 @@ export const Navbar = () => {
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
       className={[
-        'fixed top-0 left-0 right-0 z-40 transition-all duration-500',
-        scrolled ? 'glass-strong py-3 shadow-lg' : 'bg-transparent py-5',
+        'fixed top-0 left-0 right-0 z-40 transition-all duration-300',
+        scrolled ? 'glass-strong py-2 shadow-lg' : 'bg-transparent py-4',
       ].join(' ')}
     >
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 group">
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+        <Link to="/" className="flex items-center gap-3 group flex-shrink-0">
           <motion.div
-            whileHover={{ rotate: 180, scale: 1.1 }}
+            whileHover={{ rotate: 180, scale: 1.05 }}
             transition={{ duration: 0.5 }}
             className="w-10 h-10 rounded-full bg-gradient-to-br from-astra-primary to-astra-secondary flex items-center justify-center shadow-[0_0_20px_rgba(76,201,240,0.3)]"
           >
             <Sparkles className="w-5 h-5 text-white" />
           </motion.div>
-          <div>
-            <h1 className="text-xl font-bold text-astra-text font-display tracking-wider group-hover:text-glow transition-all">
+          <div className="flex flex-col">
+            <h1 className="text-xl font-bold text-astra-text font-display tracking-wider group-hover:text-astra-primary transition-colors leading-tight">
               ASTRA
             </h1>
-            <p className="text-[10px] text-astra-muted uppercase tracking-[0.2em]">Guild Portal</p>
+            <p className="text-[10px] text-astra-muted uppercase tracking-[0.2em] leading-tight">Guild Portal</p>
           </div>
         </Link>
 
@@ -71,14 +71,14 @@ export const Navbar = () => {
                 key={link.path}
                 to={link.path}
                 className={[
-                  'relative px-4 py-2 text-sm font-medium transition-colors rounded-lg flex items-center gap-2',
+                  'relative px-4 py-2 h-9 text-sm font-medium transition-all duration-200 rounded-lg flex items-center gap-2',
                   active
                     ? 'text-astra-primary bg-astra-primary/10'
                     : 'text-astra-muted hover:text-astra-text hover:bg-astra-primary/5',
                 ].join(' ')}
               >
-                <Icon className="w-4 h-4" />
-                {link.label}
+                <Icon className="w-4 h-4 flex-shrink-0" />
+                <span className="truncate">{link.label}</span>
                 {active && (
                   <motion.div
                     layoutId="nav-active"
@@ -91,39 +91,39 @@ export const Navbar = () => {
           })}
         </div>
 
-        <div className="hidden lg:flex items-center gap-3">
+        <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
           {!isLoading && (
             <>
               {isAuthenticated ? (
                 <>
-                  <Link to="/profile" className="flex items-center gap-3 group">
-                    <div className="text-right">
-                      <p className="text-sm font-medium text-astra-text group-hover:text-astra-primary transition-colors">
+                  <Link to="/profile" className="flex items-center gap-3 group min-w-0">
+                    <div className="text-right min-w-0">
+                      <p className="text-sm font-medium text-astra-text group-hover:text-astra-primary transition-colors truncate max-w-[120px]">
                         {profile?.ign || 'Member'}
                       </p>
-                      <p className="text-xs text-astra-muted">{roleLabel(profile?.role)}</p>
+                      <p className="text-xs text-astra-muted truncate">{roleLabel(profile?.role)}</p>
                     </div>
-                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-astra-primary/20 to-astra-secondary/20 border border-astra-primary/30 flex items-center justify-center text-astra-primary font-semibold text-sm">
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-astra-primary/20 to-astra-secondary/20 border border-astra-primary/30 flex items-center justify-center text-astra-primary font-semibold text-sm flex-shrink-0">
                       {profile?.ign ? profile.ign.charAt(0).toUpperCase() : '?'}
                     </div>
                   </Link>
                   <button
                     onClick={handleSignOut}
-                    className="px-4 py-2 text-sm text-astra-muted hover:text-white transition-colors"
+                    className="h-9 px-4 text-sm text-astra-muted hover:text-white transition-colors rounded-lg hover:bg-astra-primary/5"
                   >
                     Sign Out
                   </button>
                 </>
               ) : (
                 <>
-                  <Link to="/login" className="px-4 py-2 text-sm text-astra-muted hover:text-astra-primary transition-colors flex items-center gap-2">
-                    <LogIn className="w-4 h-4" /> Login
+                  <Link to="/login" className="h-9 px-4 text-sm text-astra-muted hover:text-astra-primary transition-colors rounded-lg hover:bg-astra-primary/5 flex items-center gap-2">
+                    <LogIn className="w-4 h-4 flex-shrink-0" /> Login
                   </Link>
                   <Link
                     to="/register"
-                    className="px-5 py-2.5 text-sm font-medium rounded-lg bg-gradient-to-r from-astra-primary to-astra-secondary text-white shadow-[0_0_20px_rgba(76,201,240,0.25)] hover:shadow-[0_0_30px_rgba(139,92,246,0.4)] transition-all flex items-center gap-2"
+                    className="h-9 px-5 text-sm font-medium rounded-lg bg-gradient-to-r from-astra-primary to-astra-secondary text-white shadow-[0_0_20px_rgba(76,201,240,0.25)] hover:shadow-[0_0_30px_rgba(139,92,246,0.4)] transition-all flex items-center gap-2"
                   >
-                    <UserPlus className="w-4 h-4" /> Register
+                    <UserPlus className="w-4 h-4 flex-shrink-0" /> Register
                   </Link>
                 </>
               )}
@@ -133,7 +133,8 @@ export const Navbar = () => {
 
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="lg:hidden p-2 rounded-lg text-astra-text hover:bg-astra-primary/10 transition-colors"
+          className="lg:hidden h-10 w-10 flex items-center justify-center rounded-lg text-astra-text hover:bg-astra-primary/10 transition-colors"
+          aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
         >
           {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
@@ -147,7 +148,7 @@ export const Navbar = () => {
             exit={{ opacity: 0, height: 0 }}
             className="lg:hidden glass-strong border-t border-astra-primary/10"
           >
-            <div className="px-4 py-4 space-y-2">
+            <div className="px-4 py-4 space-y-1">
               {navLinks.map((link) => {
                 const Icon = link.icon
                 const active = location.pathname === link.path
@@ -163,18 +164,18 @@ export const Navbar = () => {
                         : 'text-astra-muted hover:bg-astra-primary/5 hover:text-astra-text',
                     ].join(' ')}
                   >
-                    <Icon className="w-4 h-4" />
+                    <Icon className="w-4 h-4 flex-shrink-0" />
                     {link.label}
                   </Link>
                 )
               })}
-              <div className="pt-4 border-t border-astra-primary/10 space-y-2">
+              <div className="pt-4 mt-4 border-t border-astra-primary/10 space-y-1">
                 {isAuthenticated ? (
                   <button
                     onClick={() => { handleSignOut(); setMobileOpen(false) }}
                     className="w-full text-left flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-red-400 hover:bg-red-500/10 transition-colors"
                   >
-                    <LogOut className="w-4 h-4" /> Sign Out
+                    <LogOut className="w-4 h-4 flex-shrink-0" /> Sign Out
                   </button>
                 ) : (
                   <>
@@ -183,14 +184,14 @@ export const Navbar = () => {
                       onClick={() => setMobileOpen(false)}
                       className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-astra-muted hover:bg-astra-primary/5 transition-colors"
                     >
-                      <LogIn className="w-4 h-4" /> Login
+                      <LogIn className="w-4 h-4 flex-shrink-0" /> Login
                     </Link>
                     <Link
                       to="/register"
                       onClick={() => setMobileOpen(false)}
                       className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium bg-gradient-to-r from-astra-primary to-astra-secondary text-white"
                     >
-                      <UserPlus className="w-4 h-4" /> Register
+                      <UserPlus className="w-4 h-4 flex-shrink-0" /> Register
                     </Link>
                   </>
                 )}
