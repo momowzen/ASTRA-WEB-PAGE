@@ -35,9 +35,11 @@ export const UpcomingList = ({ lang, timers, limit = 8 }: UpcomingListProps) => 
         </span>
       </div>
 
-      <div className="flex-1 overflow-y-auto max-h-[400px] space-y-2 pr-1">
+      <div className="flex-1 overflow-y-auto space-y-2 pr-1">
         {upcoming.length === 0 ? (
-          <p className="text-astra-muted text-center py-8">No upcoming spawns</p>
+          <div className="h-full flex items-center justify-center">
+            <p className="text-astra-muted text-center py-8">No upcoming spawns</p>
+          </div>
         ) : (
           upcoming.map(({ boss, time }, index) => (
             <div

@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion'
-import { Sparkles, Shield, ChevronRight } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Sparkles } from 'lucide-react'
 import { ParticleBackground } from '../components/layout/ParticleBackground.tsx'
 import { Navbar } from '../components/layout/Navbar.tsx'
 import { Footer } from '../components/layout/Footer.tsx'
@@ -35,14 +34,6 @@ export const HiddenClassPage = () => {
                   Unlock conditions and milestone bonuses for every hidden class
                 </p>
               </div>
-              <Link
-                to="/boss-tracker"
-                className="ml-auto hidden md:flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg bg-astra-surface/60 border border-astra-primary/20 text-astra-primary hover:bg-astra-primary/10 transition-colors"
-              >
-                <Shield className="w-4 h-4" />
-                Boss Tracker
-                <ChevronRight className="w-4 h-4" />
-              </Link>
             </div>
           </motion.div>
 

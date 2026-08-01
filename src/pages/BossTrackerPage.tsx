@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion'
-import { Shield, Sparkles, ChevronRight } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Shield } from 'lucide-react'
 import { ParticleBackground } from '../components/layout/ParticleBackground.tsx'
 import { Navbar } from '../components/layout/Navbar.tsx'
 import { Footer } from '../components/layout/Footer.tsx'
@@ -39,14 +38,6 @@ export const BossTrackerPage = () => {
                   Real-time world boss respawn tracking for ASTRA
                 </p>
               </div>
-              <Link
-                to="/hidden-class"
-                className="ml-auto hidden md:flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg bg-astra-surface/60 border border-astra-primary/20 text-astra-primary hover:bg-astra-primary/10 transition-colors"
-              >
-                <Sparkles className="w-4 h-4" />
-                Hidden Classes
-                <ChevronRight className="w-4 h-4" />
-              </Link>
             </div>
             <div className="flex items-center gap-2 text-xs text-astra-muted">
               <span
@@ -69,7 +60,7 @@ export const BossTrackerPage = () => {
 
           {/* Main grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-            <div className="lg:col-span-1">
+            <div className="lg:col-span-1 h-full">
               <UpcomingList lang={lang} timers={timers} limit={10} />
             </div>
             <div className="lg:col-span-2">
