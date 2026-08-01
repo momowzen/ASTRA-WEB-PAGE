@@ -16,11 +16,14 @@ export const MembersPage = () => {
   const [search, setSearch] = useState('')
   const debouncedSearch = useDebounce(search, 300)
 
-  const filtered = members.filter((m) =>
+  const roster = members.filter((m) => m.role !== 'applicant')
+
+  const filtered = roster.filter((m) =>
     !debouncedSearch ||
     m.ign.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
     m.discordName.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
-    m.class?.toLowerCase().includes(debouncedSearch.toLowerCase()),
+    m.nationality?.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+    m.server?.toLowerCase().includes(debouncedSearch.toLowerCase()),
   )
 
   return (
@@ -89,8 +92,12 @@ export const MembersPage = () => {
                       <span className="text-astra-text">{member.level || 1}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-xs text-astra-muted uppercase tracking-wider">Class</span>
-                      <span className="text-astra-text">{member.class || '—'}</span>
+                      <span className="text-xs text-astra-muted uppercase tracking-wider">Nationality</span>
+                      <span className="text-astra-text text-sm truncate max-w-[120px]">{member.nationality || '—'}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-astra-muted uppercase tracking-wider">Server</span>
+                      <span className="text-astra-text text-sm truncate max-w-[120px]">{member.server || '—'}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-xs text-astra-muted uppercase tracking-wider">Armor</span>

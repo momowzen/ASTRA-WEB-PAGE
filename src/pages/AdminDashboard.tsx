@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Shield, Users, AlertTriangle, Trash2 } from 'lucide-react'
+import { Shield, Users, UserPlus, AlertTriangle, Trash2 } from 'lucide-react'
 import { ParticleBackground } from '../components/layout/ParticleBackground.tsx'
 import { Navbar } from '../components/layout/Navbar.tsx'
 import { Footer } from '../components/layout/Footer.tsx'
 import { GlassCard } from '../components/ui/GlassCard.tsx'
 import { LoadingSpinner } from '../components/ui/LoadingSpinner.tsx'
 import { MemberTable } from '../components/admin/MemberTable.tsx'
+import { ApplicantTable } from '../components/admin/ApplicantTable.tsx'
 import { StatsOverview } from '../components/admin/StatsOverview.tsx'
 import { MemberQuickEdit } from '../components/admin/MemberQuickEdit.tsx'
 import { useAuth } from '../hooks/useAuth.ts'
@@ -14,7 +15,7 @@ import { useUsers } from '../hooks/useUsers.ts'
 import { deleteMember, updateMemberProfile } from '../services/userService.ts'
 import { Modal } from '../components/ui/Modal.tsx'
 import { GlowButton } from '../components/ui/GlowButton.tsx'
-import type { MemberProfile, MemberFormData } from '../types/index.ts'
+import type { MemberProfile, MemberFormData, UserRole } from '../types/index.ts'
 
 export const AdminDashboard = () => {
   const { profile, isLoading: authLoading, isAdmin } = useAuth()
@@ -42,7 +43,10 @@ export const AdminDashboard = () => {
     )
   }
 
-  const handleEdit = async (uid: string, formData: MemberFormData, role: 'admin' | 'member') => {
+  const applicants = members.filter((m) => m.role === 'applicant')
+  const roster = members.filter((m) => m.role !== 'applicant')
+
+  const handleEdit = async (uid: string, formData: MemberFormData, role: UserRole) => {
     setSaving(true)
     setActionError('')
     try {
@@ -51,6 +55,19 @@ export const AdminDashboard = () => {
       setEditingMember(null)
     } catch (err) {
       setActionError(err instanceof Error ? err.message : 'Failed to update member.')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const handleApprove = async (applicant: MemberProfile) => {
+    setSaving(true)
+    setActionError('')
+    try {
+      await updateMemberProfile(applicant.uid, {}, 'member')
+      await refetch()
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : 'Failed to approve applicant.')
     } finally {
       setSaving(false)
     }
@@ -88,16 +105,53 @@ export const AdminDashboard = () => {
             </div>
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <h1 className="text-3xl sm:text-4xl font-bold text-astra-text font-display">Guild Management</h1>
-              <div className="flex items-center gap-2 text-sm text-astra-muted">
-                <Users className="w-4 h-4" />
-                {members.length} members registered
+              <div className="flex items-center gap-4 text-sm text-astra-muted">
+                <div className="flex items-center gap-2">
+                  <UserPlus className="w-4 h-4" />
+                  {applicants.length} applicants
+                </div>
+                <div className="flex items-center gap-2">
+                  <Users className="w-4 h-4" />
+                  {roster.length} members
+                </div>
               </div>
             </div>
           </motion.div>
 
           <StatsOverview members={members} />
 
+          {applicants.length > 0 && (
+            <GlassCard className="gradient-border mb-8">
+              <div className="flex items-center gap-2 mb-4">
+                <UserPlus className="w-5 h-5 text-astra-primary" />
+                <h2 className="text-lg font-bold text-astra-text font-display">Pending Applications</h2>
+                <span className="ml-auto text-xs text-astra-muted bg-astra-primary/10 px-2 py-1 rounded-full">
+                  {applicants.length}
+                </span>
+              </div>
+              {fetchError && (
+                <div className="p-4 mb-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+                  Error loading applicants: {fetchError}
+                </div>
+              )}
+              {loading ? (
+                <LoadingSpinner message="Loading applications..." />
+              ) : (
+                <ApplicantTable
+                  applicants={applicants}
+                  onApprove={handleApprove}
+                  onReject={setDeletingMember}
+                  onEdit={setEditingMember}
+                />
+              )}
+            </GlassCard>
+          )}
+
           <GlassCard className="gradient-border">
+            <div className="flex items-center gap-2 mb-4">
+              <Users className="w-5 h-5 text-astra-primary" />
+              <h2 className="text-lg font-bold text-astra-text font-display">Guild Roster</h2>
+            </div>
             {fetchError && (
               <div className="p-4 mb-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
                 Error loading members: {fetchError}
@@ -107,7 +161,7 @@ export const AdminDashboard = () => {
               <LoadingSpinner message="Loading guild roster..." />
             ) : (
               <MemberTable
-                members={members}
+                members={roster}
                 onEdit={setEditingMember}
                 onDelete={setDeletingMember}
                 currentUserId={profile.uid}
@@ -128,7 +182,7 @@ export const AdminDashboard = () => {
         isLoading={saving}
       />
 
-      <Modal isOpen={!!deletingMember} onClose={() => { if (!deleting) setDeletingMember(null) }} title="Delete Member" size="sm">
+      <Modal isOpen={!!deletingMember} onClose={() => { if (!deleting) setDeletingMember(null) }} title={deletingMember?.role === 'applicant' ? 'Reject Application' : 'Delete Member'} size="sm">
         <div className="space-y-6">
           {actionError && (
             <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">{actionError}</div>
@@ -138,7 +192,9 @@ export const AdminDashboard = () => {
             <div>
               <p className="text-astra-text font-medium">Are you sure?</p>
               <p className="text-sm text-astra-muted">
-                This will permanently delete {deletingMember?.ign} from the guild roster.
+                {deletingMember?.role === 'applicant'
+                  ? `This will reject ${deletingMember?.ign}'s application and remove their account data.`
+                  : `This will permanently delete ${deletingMember?.ign} from the guild roster.`}
               </p>
             </div>
           </div>
@@ -147,7 +203,7 @@ export const AdminDashboard = () => {
               Cancel
             </GlowButton>
             <GlowButton variant="danger" onClick={handleDelete} loading={deleting} icon={<Trash2 className="w-4 h-4" />}>
-              Delete
+              {deletingMember?.role === 'applicant' ? 'Reject' : 'Delete'}
             </GlowButton>
           </div>
         </div>

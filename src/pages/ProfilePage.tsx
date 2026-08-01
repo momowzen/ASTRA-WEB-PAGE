@@ -23,7 +23,8 @@ const createInitialFormData = (profile: MemberProfile): MemberFormData => ({
   discordName: profile.discordName,
   combatPower: profile.combatPower,
   level: profile.level,
-  class: profile.class || '',
+  nationality: profile.nationality || '',
+  server: profile.server || '',
   mainWeapon: profile.mainWeapon,
   subWeapon: profile.subWeapon,
   armor: profile.armor,
@@ -46,7 +47,8 @@ export const ProfilePage = () => {
     discordName: '',
     combatPower: 0,
     level: 1,
-    class: '',
+    nationality: '',
+    server: '',
     mainWeapon: '',
     subWeapon: '',
     armor: '',
@@ -227,8 +229,12 @@ export const ProfilePage = () => {
                       <span className="text-astra-text">{profile.level}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-astra-muted">Class</span>
-                      <span className="text-astra-text">{profile.class || '—'}</span>
+                      <span className="text-astra-muted">Nationality</span>
+                      <span className="text-astra-text">{profile.nationality || '—'}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-astra-muted">Server</span>
+                      <span className="text-astra-text">{profile.server || '—'}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-astra-muted flex items-center gap-2"><Calendar className="w-4 h-4" /> Updated</span>

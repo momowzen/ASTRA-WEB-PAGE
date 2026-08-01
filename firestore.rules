@@ -16,17 +16,21 @@ service cloud.firestore {
     }
 
     function isValidUserForUpdate(user) {
-      return user.keys().hasAll(['uid', 'role', 'ign', 'discordName', 'email',
+      return user.keys().hasOnly(['uid', 'role', 'ign', 'discordName', 'email',
         'mainWeapon', 'subWeapon', 'armor',
         'necklace', 'ring', 'earring', 'bracelet', 'belt',
-        'combatPower', 'level', 'class', 'notes',
-        'createdAt', 'updatedAt'])
+        'combatPower', 'level', 'nationality', 'server', 'notes',
+        'createdAt', 'updatedAt', 'avatar'])
         && user.role is string;
+    }
+
+    function isAllowedRole(role) {
+      return role == 'admin' || role == 'member' || role == 'applicant';
     }
 
     match /users/{userId} {
       allow read: if isAuthenticated();
-      allow create: if isAuthenticated() && request.auth.uid == userId && request.resource.data.role == 'member';
+      allow create: if isAuthenticated() && request.auth.uid == userId && request.resource.data.role == 'applicant' && isValidUserForUpdate(request.resource.data);
       allow update: if isAdmin() || (
         isOwner(userId) &&
         isValidUserForUpdate(request.resource.data) &&

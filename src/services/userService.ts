@@ -23,14 +23,15 @@ const profileConverter = {
     const data = snapshot.data()
     return {
       uid: snapshot.id,
-      role: (data.role as 'admin' | 'member') || 'member',
+      role: (data.role as 'admin' | 'member' | 'applicant') || 'member',
       ign: (data.ign as string) || '',
       discordName: (data.discordName as string) || '',
       email: (data.email as string) || '',
       avatar: (data.avatar as string) || null,
       combatPower: (data.combatPower as number) || 0,
       level: (data.level as number) || 1,
-      class: (data.class as string) || '',
+      nationality: (data.nationality as string) || '',
+      server: (data.server as string) || '',
       mainWeapon: (data.mainWeapon as string) || '',
       subWeapon: (data.subWeapon as string) || '',
       armor: (data.armor as string) || '',
@@ -46,28 +47,35 @@ const profileConverter = {
   },
 }
 
-export const createMemberProfile = async (
+
+
+export const createApplicantProfile = async (
   uid: string,
   data: {
     ign: string
     discordName: string
     email: string
-    role?: 'admin' | 'member'
+    level: number
+    combatPower: number
+    nationality: string
+    server: string
+    mainWeapon: string
     avatar?: string | null
   },
 ): Promise<MemberProfile> => {
   const now = new Date().toISOString()
   const profile: MemberProfile = {
     uid,
-    role: data.role || 'member',
+    role: 'applicant',
     ign: data.ign,
     discordName: data.discordName,
     email: data.email,
     avatar: data.avatar || null,
-    combatPower: 0,
-    level: 1,
-    class: '',
-    mainWeapon: '',
+    combatPower: data.combatPower,
+    level: data.level,
+    nationality: data.nationality,
+    server: data.server,
+    mainWeapon: data.mainWeapon,
     subWeapon: '',
     armor: '',
     necklace: false,
@@ -101,7 +109,7 @@ export const getAllMembers = async (): Promise<MemberProfile[]> => {
 export const updateMemberProfile = async (
   uid: string,
   formData: Partial<MemberFormData>,
-  role?: 'admin' | 'member',
+  role?: 'admin' | 'member' | 'applicant',
 ): Promise<MemberProfile> => {
   const docRef = doc(db, USERS_COLLECTION, uid)
   const updateData: Record<string, unknown> = {

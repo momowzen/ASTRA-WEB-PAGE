@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { X, Save, Crown, User, Upload, Loader2 } from 'lucide-react'
+import { X, Save, Crown, User, Upload, Loader2, UserPlus } from 'lucide-react'
 import { Modal } from '../ui/Modal.tsx'
 import { Input } from '../ui/Input.tsx'
 import { GlowButton } from '../ui/GlowButton.tsx'
@@ -7,13 +7,13 @@ import { Avatar } from '../ui/Avatar.tsx'
 import { EquipmentEditor } from '../profile/EquipmentEditor.tsx'
 import { uploadAvatar } from '../../services/storageService.ts'
 import { updateMemberAvatar } from '../../services/userService.ts'
-import type { MemberProfile, MemberFormData } from '../../types/index.ts'
+import type { MemberProfile, MemberFormData, UserRole } from '../../types/index.ts'
 
 interface MemberQuickEditProps {
   member: MemberProfile | null
   isOpen: boolean
   onClose: () => void
-  onSave: (uid: string, data: MemberFormData, role: 'admin' | 'member') => void
+  onSave: (uid: string, data: MemberFormData, role: UserRole) => void
   isAdmin: boolean
   isLoading: boolean
 }
@@ -23,7 +23,8 @@ const initialFormData = (member: MemberProfile | null): MemberFormData => ({
   discordName: member?.discordName || '',
   combatPower: member?.combatPower || 0,
   level: member?.level || 1,
-  class: member?.class || '',
+  nationality: member?.nationality || '',
+  server: member?.server || '',
   mainWeapon: member?.mainWeapon || '',
   subWeapon: member?.subWeapon || '',
   armor: member?.armor || '',
@@ -37,7 +38,7 @@ const initialFormData = (member: MemberProfile | null): MemberFormData => ({
 
 export const MemberQuickEdit = ({ member, isOpen, onClose, onSave, isAdmin, isLoading }: MemberQuickEditProps) => {
   const [formData, setFormData] = useState<MemberFormData>(initialFormData(member))
-  const [role, setRole] = useState<'admin' | 'member'>('member')
+  const [role, setRole] = useState<UserRole>('member')
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
   const [uploading, setUploading] = useState(false)
 
@@ -81,7 +82,7 @@ export const MemberQuickEdit = ({ member, isOpen, onClose, onSave, isAdmin, isLo
   if (!member) return null
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Edit Member" size="lg">
+    <Modal isOpen={isOpen} onClose={onClose} title={member.role === 'applicant' ? 'Review Applicant' : 'Edit Member'} size="lg">
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="flex flex-col sm:flex-row items-center gap-6">
           <div className="relative">
@@ -109,16 +110,29 @@ export const MemberQuickEdit = ({ member, isOpen, onClose, onSave, isAdmin, isLo
           <Input label="Discord Name" name="discordName" value={formData.discordName} onChange={handleChange} required />
           <Input label="Combat Power" name="combatPower" type="number" value={formData.combatPower} onChange={handleChange} required />
           <Input label="Level" name="level" type="number" value={formData.level} onChange={handleChange} required />
-          <Input label="Class" name="class" value={formData.class} onChange={handleChange} />
+          <Input label="Nationality" name="nationality" value={formData.nationality} onChange={handleChange} />
+          <Input label="Server" name="server" value={formData.server} onChange={handleChange} />
           {isAdmin && (
-            <div>
+            <div className="sm:col-span-2">
               <label className="block text-sm font-medium text-astra-muted mb-2 tracking-wide">Role</label>
-              <div className="flex gap-2">
+              <div className="grid grid-cols-3 gap-2">
+                <button
+                  type="button"
+                  onClick={() => setRole('applicant')}
+                  className={[
+                    'px-4 py-3 rounded-lg border text-sm font-medium transition-colors flex items-center justify-center gap-2',
+                    role === 'applicant'
+                      ? 'bg-astra-primary/10 border-astra-primary text-astra-primary'
+                      : 'bg-astra-bg/60 border-astra-primary/10 text-astra-muted hover:text-astra-text',
+                  ].join(' ')}
+                >
+                  <UserPlus className="w-4 h-4" /> Applicant
+                </button>
                 <button
                   type="button"
                   onClick={() => setRole('member')}
                   className={[
-                    'flex-1 px-4 py-3 rounded-lg border text-sm font-medium transition-colors flex items-center justify-center gap-2',
+                    'px-4 py-3 rounded-lg border text-sm font-medium transition-colors flex items-center justify-center gap-2',
                     role === 'member'
                       ? 'bg-astra-primary/10 border-astra-primary text-astra-primary'
                       : 'bg-astra-bg/60 border-astra-primary/10 text-astra-muted hover:text-astra-text',
@@ -130,7 +144,7 @@ export const MemberQuickEdit = ({ member, isOpen, onClose, onSave, isAdmin, isLo
                   type="button"
                   onClick={() => setRole('admin')}
                   className={[
-                    'flex-1 px-4 py-3 rounded-lg border text-sm font-medium transition-colors flex items-center justify-center gap-2',
+                    'px-4 py-3 rounded-lg border text-sm font-medium transition-colors flex items-center justify-center gap-2',
                     role === 'admin'
                       ? 'bg-astra-accent/10 border-astra-accent text-astra-accent'
                       : 'bg-astra-bg/60 border-astra-primary/10 text-astra-muted hover:text-astra-text',

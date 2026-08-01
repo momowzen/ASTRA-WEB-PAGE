@@ -88,7 +88,8 @@ export const ProfileForm = ({ profile, formData, onChange, onSubmit, isLoading =
           required
         />
         <Input label="Level" name="level" type="number" value={formData.level} onChange={handleChange} required />
-        <Input label="Class" name="class" value={formData.class} onChange={handleChange} placeholder="Warrior, Mage, etc." />
+        <Input label="Nationality" name="nationality" value={formData.nationality} onChange={handleChange} placeholder="Country" />
+        <Input label="Server" name="server" value={formData.server} onChange={handleChange} placeholder="Current server" />
       </div>
 
       <div className="space-y-2">

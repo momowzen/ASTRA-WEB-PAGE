@@ -1,4 +1,4 @@
-export type UserRole = 'admin' | 'member'
+export type UserRole = 'admin' | 'member' | 'applicant'
 
 export interface MemberProfile {
   uid: string
@@ -9,7 +9,8 @@ export interface MemberProfile {
   avatar?: string | null
   combatPower: number
   level: number
-  class?: string
+  nationality: string
+  server: string
   mainWeapon: string
   subWeapon: string
   armor: string
@@ -28,7 +29,8 @@ export interface MemberFormData {
   discordName: string
   combatPower: number
   level: number
-  class: string
+  nationality: string
+  server: string
   mainWeapon: string
   subWeapon: string
   armor: string
@@ -69,6 +71,7 @@ export type MemberSortField =
   | 'combatPower'
   | 'level'
   | 'mainWeapon'
+  | 'nationality'
   | 'updatedAt'
 
 export type SortDirection = 'asc' | 'desc'

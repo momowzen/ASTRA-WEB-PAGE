@@ -1,11 +1,11 @@
 import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Search, ChevronUp, ChevronDown, Edit, Trash2, MoreHorizontal, Shield, User } from 'lucide-react'
+import { Search, ChevronUp, ChevronDown, Edit, Trash2, MoreHorizontal, Shield, User, UserPlus } from 'lucide-react'
 import { Avatar } from '../ui/Avatar.tsx'
 import { GlowButton } from '../ui/GlowButton.tsx'
 import { useDebounce } from '../../hooks/useDebounce.ts'
 import { formatNumber, formatDate } from '../../utils/helpers.ts'
-import type { MemberProfile, MemberSortField, SortDirection } from '../../types/index.ts'
+import type { MemberProfile, MemberSortField, SortDirection, UserRole } from '../../types/index.ts'
 
 interface MemberTableProps {
   members: MemberProfile[]
@@ -17,7 +17,7 @@ interface MemberTableProps {
 
 export const MemberTable = ({ members, onEdit, onDelete, currentUserId, isAdmin }: MemberTableProps) => {
   const [search, setSearch] = useState('')
-  const [filterRole, setFilterRole] = useState<'all' | 'admin' | 'member'>('all')
+  const [filterRole, setFilterRole] = useState<'all' | UserRole>('all')
   const [sortField, setSortField] = useState<MemberSortField>('combatPower')
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc')
   const [currentPage, setCurrentPage] = useState(1)
@@ -42,7 +42,8 @@ export const MemberTable = ({ members, onEdit, onDelete, currentUserId, isAdmin 
         m.ign.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
         m.discordName.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
         m.email.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
-        m.class?.toLowerCase().includes(debouncedSearch.toLowerCase())
+        m.nationality?.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+        m.server?.toLowerCase().includes(debouncedSearch.toLowerCase())
 
       const matchesRole = filterRole === 'all' || m.role === filterRole
 
@@ -69,6 +70,10 @@ export const MemberTable = ({ members, onEdit, onDelete, currentUserId, isAdmin 
         case 'mainWeapon':
           aValue = a.mainWeapon || ''
           bValue = b.mainWeapon || ''
+          break
+        case 'nationality':
+          aValue = a.nationality || ''
+          bValue = b.nationality || ''
           break
         case 'updatedAt':
           aValue = a.updatedAt || ''
@@ -100,6 +105,28 @@ export const MemberTable = ({ members, onEdit, onDelete, currentUserId, isAdmin 
     )
   }
 
+  const roleBadge = (role: UserRole) => {
+    if (role === 'admin') {
+      return (
+        <span className="px-2 py-0.5 rounded bg-astra-accent/10 text-astra-accent text-[10px] uppercase tracking-wider flex items-center gap-1">
+          <Shield className="w-3 h-3" /> Admin
+        </span>
+      )
+    }
+    if (role === 'applicant') {
+      return (
+        <span className="px-2 py-0.5 rounded bg-astra-primary/10 text-astra-primary text-[10px] uppercase tracking-wider flex items-center gap-1">
+          <UserPlus className="w-3 h-3" /> Applicant
+        </span>
+      )
+    }
+    return (
+      <span className="px-2 py-0.5 rounded bg-astra-secondary/10 text-astra-secondary text-[10px] uppercase tracking-wider flex items-center gap-1">
+        <User className="w-3 h-3" /> Member
+      </span>
+    )
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
@@ -107,7 +134,7 @@ export const MemberTable = ({ members, onEdit, onDelete, currentUserId, isAdmin 
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-astra-muted" />
           <input
             type="text"
-            placeholder="Search by IGN, Discord, class..."
+            placeholder="Search by IGN, Discord, nationality, server..."
             value={search}
             onChange={(e) => {
               setSearch(e.target.value)
@@ -117,7 +144,7 @@ export const MemberTable = ({ members, onEdit, onDelete, currentUserId, isAdmin 
           />
         </div>
         <div className="flex gap-2">
-          {(['all', 'admin', 'member'] as const).map((role) => (
+          {(['all', 'admin', 'member', 'applicant'] as const).map((role) => (
             <button
               key={role}
               onClick={() => {
@@ -147,6 +174,7 @@ export const MemberTable = ({ members, onEdit, onDelete, currentUserId, isAdmin 
                   { field: 'combatPower' as MemberSortField, label: 'CP', wide: false },
                   { field: 'level' as MemberSortField, label: 'Lvl', wide: false },
                   { field: 'mainWeapon' as MemberSortField, label: 'Main Weapon', wide: false },
+                  { field: 'nationality' as MemberSortField, label: 'Nationality', wide: false },
                   { field: 'updatedAt' as MemberSortField, label: 'Updated', wide: false },
                 ].map((col) => (
                   <th
@@ -183,15 +211,7 @@ export const MemberTable = ({ members, onEdit, onDelete, currentUserId, isAdmin 
                         <div>
                           <div className="flex items-center gap-2">
                             <span className="font-semibold text-astra-text">{member.ign}</span>
-                            {member.role === 'admin' ? (
-                              <span className="px-2 py-0.5 rounded bg-astra-accent/10 text-astra-accent text-[10px] uppercase tracking-wider flex items-center gap-1">
-                                <Shield className="w-3 h-3" /> Admin
-                              </span>
-                            ) : (
-                              <span className="px-2 py-0.5 rounded bg-astra-primary/10 text-astra-primary text-[10px] uppercase tracking-wider flex items-center gap-1">
-                                <User className="w-3 h-3" /> Member
-                              </span>
-                            )}
+                            {roleBadge(member.role)}
                           </div>
                           <p className="text-xs text-astra-muted">{member.discordName}</p>
                         </div>
@@ -203,6 +223,9 @@ export const MemberTable = ({ members, onEdit, onDelete, currentUserId, isAdmin 
                     <td className="px-4 py-4 text-astra-text">{member.level || 1}</td>
                     <td className="px-4 py-4">
                       <span className="text-sm text-astra-muted">{member.mainWeapon || '—'}</span>
+                    </td>
+                    <td className="px-4 py-4">
+                      <span className="text-sm text-astra-muted">{member.nationality || '—'}</span>
                     </td>
                     <td className="px-4 py-4 text-sm text-astra-muted">{formatDate(member.updatedAt)}</td>
                     <td className="px-4 py-4">

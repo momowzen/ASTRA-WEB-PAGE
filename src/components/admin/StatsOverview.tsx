@@ -1,4 +1,4 @@
-import { Users, Zap, TrendingUp, Sparkles } from 'lucide-react'
+import { Users, Zap, TrendingUp, UserPlus } from 'lucide-react'
 import { StatCard } from '../ui/StatCard.tsx'
 import { AnimatedCounter } from '../ui/AnimatedCounter.tsx'
 import type { MemberProfile } from '../../types/index.ts'
@@ -8,10 +8,12 @@ interface StatsOverviewProps {
 }
 
 export const StatsOverview = ({ members }: StatsOverviewProps) => {
-  const total = members.length
-  const averageCP = total ? Math.floor(members.reduce((acc, m) => acc + (m.combatPower || 0), 0) / total) : 0
-  const highestCP = total ? Math.max(...members.map((m) => m.combatPower || 0)) : 0
-  const newest = total ? members[0]?.ign || '—' : '—'
+  const roster = members.filter((m) => m.role !== 'applicant')
+  const applicants = members.filter((m) => m.role === 'applicant')
+  const total = roster.length
+  const averageCP = total ? Math.floor(roster.reduce((acc, m) => acc + (m.combatPower || 0), 0) / total) : 0
+  const highestCP = total ? Math.max(...roster.map((m) => m.combatPower || 0)) : 0
+  const pendingApplicants = applicants.length
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -37,9 +39,9 @@ export const StatsOverview = ({ members }: StatsOverviewProps) => {
         accent="accent"
       />
       <StatCard
-        label="Newest Member"
-        value={newest}
-        icon={<Sparkles className="w-5 h-5" />}
+        label={pendingApplicants === 1 ? 'Pending Applicant' : 'Pending Applicants'}
+        value={pendingApplicants > 0 ? <AnimatedCounter value={pendingApplicants} /> : '—'}
+        icon={<UserPlus className="w-5 h-5" />}
         delay={0.3}
         accent="purple"
       />
