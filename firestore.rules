@@ -15,30 +15,37 @@ service cloud.firestore {
       return isAuthenticated() && request.auth.uid == userId;
     }
 
-    function isValidUserForUpdate(user) {
-      return user.keys().hasOnly(['uid', 'role', 'ign', 'discordName', 'email',
-        'mainWeapon', 'subWeapon', 'armor',
-        'necklace', 'ring', 'earring', 'bracelet', 'belt',
-        'combatPower', 'level', 'nationality', 'server', 'notes',
-        'createdAt', 'updatedAt', 'avatar', 'class'])
-        && user.role is string;
-    }
-
     function isAllowedRole(role) {
       return role == 'admin' || role == 'member' || role == 'applicant';
     }
 
+    function isValidUserCreate(user) {
+      return user.keys().hasAll(['uid', 'role', 'ign', 'discordName', 'email',
+        'mainWeapon', 'subWeapon', 'armor',
+        'necklace', 'ring', 'earring', 'bracelet', 'belt',
+        'combatPower', 'level', 'nationality', 'server', 'notes',
+        'createdAt', 'updatedAt'])
+        && user.keys().hasOnly(['uid', 'role', 'ign', 'discordName', 'email',
+        'mainWeapon', 'subWeapon', 'armor',
+        'necklace', 'ring', 'earring', 'bracelet', 'belt',
+        'combatPower', 'level', 'nationality', 'server', 'notes',
+        'createdAt', 'updatedAt', 'avatar'])
+        && user.role is string;
+    }
+
+    function isValidUserUpdate(request, resource) {
+      return request.resource.data.diff(resource.data).affectedKeys()
+        .hasOnly(['ign', 'discordName', 'email', 'mainWeapon', 'subWeapon', 'armor',
+          'necklace', 'ring', 'earring', 'bracelet', 'belt',
+          'combatPower', 'level', 'nationality', 'server', 'notes',
+          'updatedAt', 'role', 'avatar']);
+    }
+
     match /users/{userId} {
       allow read: if isAuthenticated();
-      allow create: if isAuthenticated() && request.auth.uid == userId && request.resource.data.role == 'applicant' && isValidUserForUpdate(request.resource.data);
-      allow update: if (isAdmin() &&
-        isValidUserForUpdate(request.resource.data) &&
-        isAllowedRole(request.resource.data.role)
-      ) || (
-        isOwner(userId) &&
-        isValidUserForUpdate(request.resource.data) &&
-        request.resource.data.role == resource.data.role
-      );
+      allow create: if isAuthenticated() && request.auth.uid == userId && request.resource.data.role == 'applicant' && isValidUserCreate(request.resource.data);
+      allow update: if (isAdmin() && isValidUserUpdate(request, resource) && isAllowedRole(request.resource.data.role))
+        || (isOwner(userId) && isValidUserUpdate(request, resource) && request.resource.data.role == resource.data.role);
       allow delete: if isAdmin() && request.auth.uid != userId;
     }
   }
