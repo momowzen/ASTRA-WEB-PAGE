@@ -16,7 +16,13 @@ import { LoadingSpinner } from '../components/ui/LoadingSpinner.tsx'
 import { useAuth } from '../hooks/useAuth.ts'
 import { updateMemberProfile } from '../services/userService.ts'
 import { formatDate } from '../utils/helpers.ts'
-import type { MemberFormData, MemberProfile } from '../types/index.ts'
+import type { MemberFormData, MemberProfile, UserRole } from '../types/index.ts'
+
+const roleLabel = (role: UserRole): string => {
+  if (role === 'admin') return 'Guild Master'
+  if (role === 'applicant') return 'Applicant'
+  return 'Member'
+}
 
 const createInitialFormData = (profile: MemberProfile): MemberFormData => ({
   ign: profile.ign,
@@ -37,7 +43,7 @@ const createInitialFormData = (profile: MemberProfile): MemberFormData => ({
 })
 
 export const ProfilePage = () => {
-  const { profile, isLoading, isAdmin, isAuthenticated, authError, refreshProfile } = useAuth()
+  const { profile, isLoading, isAuthenticated, authError, refreshProfile } = useAuth()
   const [isEditing, setIsEditing] = useState(false)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
@@ -208,9 +214,16 @@ export const ProfilePage = () => {
                   <p className="text-astra-muted mb-4 flex items-center justify-center gap-2">
                     <MessageCircle className="w-4 h-4" /> {profile.discordName}
                   </p>
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-astra-primary/10 border border-astra-primary/20 text-astra-primary text-xs uppercase tracking-wider mb-6">
-                    {isAdmin ? <Shield className="w-3 h-3" /> : <Sparkles className="w-3 h-3" />}
-                    {isAdmin ? 'Guild Master' : 'Member'}
+                  <div className={[
+                    'inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs uppercase tracking-wider mb-6',
+                    profile.role === 'admin'
+                      ? 'bg-astra-accent/10 border border-astra-accent/20 text-astra-accent'
+                      : profile.role === 'applicant'
+                        ? 'bg-astra-primary/10 border border-astra-primary/20 text-astra-primary'
+                        : 'bg-astra-secondary/10 border border-astra-secondary/20 text-astra-secondary',
+                  ].join(' ')}>
+                    {profile.role === 'admin' ? <Shield className="w-3 h-3" /> : <Sparkles className="w-3 h-3" />}
+                    {roleLabel(profile.role)}
                   </div>
                   <GlowButton onClick={startEditing} icon={<Edit className="w-4 h-4" />} className="w-full">
                     Edit Profile

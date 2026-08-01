@@ -5,6 +5,13 @@ import { Menu, X, Sparkles, User, LogIn, LogOut, UserPlus, Shield, Home, Users, 
 import { useAuth } from '../../hooks/useAuth.ts'
 import { useScrollHeader } from '../../hooks/useScrollHeader.ts'
 import { signOut } from '../../services/authService.ts'
+import type { UserRole } from '../../types/index.ts'
+
+const roleLabel = (role?: UserRole): string => {
+  if (role === 'admin') return 'Guild Master'
+  if (role === 'applicant') return 'Applicant'
+  return 'Member'
+}
 
 export const Navbar = () => {
   const { profile, isAuthenticated, isAdmin, isLoading } = useAuth()
@@ -94,7 +101,7 @@ export const Navbar = () => {
                       <p className="text-sm font-medium text-astra-text group-hover:text-astra-primary transition-colors">
                         {profile?.ign || 'Member'}
                       </p>
-                      <p className="text-xs text-astra-muted">{profile?.role === 'admin' ? 'Guild Master' : 'Member'}</p>
+                      <p className="text-xs text-astra-muted">{roleLabel(profile?.role)}</p>
                     </div>
                     <div className="w-9 h-9 rounded-full bg-gradient-to-br from-astra-primary/20 to-astra-secondary/20 border border-astra-primary/30 flex items-center justify-center text-astra-primary font-semibold text-sm">
                       {profile?.ign ? profile.ign.charAt(0).toUpperCase() : '?'}
