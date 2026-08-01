@@ -174,10 +174,29 @@ export const ProfilePage = () => {
                     </div>
                   )}
 
-                  {/* Header */}
-                  <div className="mb-8 pb-6 border-b border-astra-primary/10">
-                    <h2 className="text-2xl font-bold text-astra-text font-display">Edit Profile</h2>
-                    <p className="text-sm text-astra-muted mt-1">Update your character details and equipment.</p>
+                  {/* Header with actions */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-astra-primary/10">
+                    <div>
+                      <h2 className="text-2xl font-bold text-astra-text font-display">Edit Profile</h2>
+                      <p className="text-sm text-astra-muted mt-1">Update your character details and equipment.</p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <GlowButton
+                        type="button"
+                        variant="outline"
+                        onClick={() => setIsEditing(false)}
+                        icon={<X className="w-4 h-4" />}
+                      >
+                        Cancel
+                      </GlowButton>
+                      <GlowButton
+                        type="submit"
+                        loading={saving}
+                        icon={<Save className="w-4 h-4" />}
+                      >
+                        Save Changes
+                      </GlowButton>
+                    </div>
                   </div>
 
                   {/* Tabs */}
@@ -228,24 +247,6 @@ export const ProfilePage = () => {
                     </div>
                   )}
 
-                  {/* Bottom actions */}
-                  <div className="flex items-center justify-end gap-3 mt-10 pt-6 border-t border-astra-primary/10">
-                    <GlowButton
-                      type="button"
-                      variant="outline"
-                      onClick={() => setIsEditing(false)}
-                      icon={<X className="w-4 h-4" />}
-                    >
-                      Cancel
-                    </GlowButton>
-                    <GlowButton
-                      type="submit"
-                      loading={saving}
-                      icon={<Save className="w-4 h-4" />}
-                    >
-                      Save Changes
-                    </GlowButton>
-                  </div>
                 </GlassCard>
               </form>
             </div>
