@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Edit, Sparkles, Shield, Calendar, MessageCircle, X } from 'lucide-react'
+import { Edit, Sparkles, Shield, Calendar, MessageCircle } from 'lucide-react'
 import { ParticleBackground } from '../components/layout/ParticleBackground.tsx'
 import { Navbar } from '../components/layout/Navbar.tsx'
 import { Footer } from '../components/layout/Footer.tsx'
@@ -16,6 +16,7 @@ import { LoadingSpinner } from '../components/ui/LoadingSpinner.tsx'
 import { useAuth } from '../hooks/useAuth.ts'
 import { updateMemberProfile } from '../services/userService.ts'
 import { formatDate } from '../utils/helpers.ts'
+import { getCountryFlag } from '../types/index.ts'
 import type { MemberFormData, MemberProfile, UserRole } from '../types/index.ts'
 
 const roleLabel = (role: UserRole): string => {
@@ -163,47 +164,24 @@ export const ProfilePage = () => {
           </motion.div>
 
           {isEditing ? (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              <div className="lg:col-span-2">
-                <GlassCard>
-                  {error && (
-                    <div className="mb-6 p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
-                      {error}
-                    </div>
-                  )}
-                  <ProfileForm
-                    profile={profile}
-                    formData={editForm}
-                    onChange={setEditForm}
-                    onSubmit={handleSave}
-                    isLoading={saving}
-                  />
-                </GlassCard>
-              </div>
-              <div className="lg:col-span-1">
-                <GlassCard>
-                  <h3 className="text-xl font-semibold text-astra-text font-display mb-4">Equipment</h3>
-                  <EquipmentEditor formData={editForm} onChange={setEditForm} />
-                  <div className="flex justify-end gap-3 mt-6">
-                    <GlowButton
-                      type="button"
-                      variant="outline"
-                      onClick={() => setIsEditing(false)}
-                      icon={<X className="w-4 h-4" />}
-                    >
-                      Cancel
-                    </GlowButton>
-                    <GlowButton
-                      type="button"
-                      onClick={handleSave}
-                      loading={saving}
-                      icon={<Edit className="w-4 h-4" />}
-                    >
-                      Save Changes
-                    </GlowButton>
+            <div className="max-w-5xl mx-auto">
+              <GlassCard>
+                {error && (
+                  <div className="mb-6 p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+                    {error}
                   </div>
-                </GlassCard>
-              </div>
+                )}
+                <ProfileForm
+                  formData={editForm}
+                  onChange={setEditForm}
+                  onSubmit={handleSave}
+                  isLoading={saving}
+                />
+                <div className="mt-8 pt-8 border-t border-astra-primary/10">
+                  <h3 className="text-xl font-semibold text-astra-text font-display mb-6">Equipment</h3>
+                  <EquipmentEditor formData={editForm} onChange={setEditForm} />
+                </div>
+              </GlassCard>
             </div>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -243,7 +221,9 @@ export const ProfilePage = () => {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-astra-muted">Nationality</span>
-                      <span className="text-astra-text">{profile.nationality || '—'}</span>
+                      <span className="text-astra-text">
+                        {profile.nationality ? `${getCountryFlag(profile.nationality)} ${profile.nationality}` : '—'}
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-astra-muted">Server</span>

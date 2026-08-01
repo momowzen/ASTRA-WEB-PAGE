@@ -3,6 +3,7 @@ import { Check, X, UserPlus, MessageCircle, Sword, Globe, Server, Gauge, BarChar
 import { Avatar } from '../ui/Avatar.tsx'
 import { GlowButton } from '../ui/GlowButton.tsx'
 import { formatNumber } from '../../utils/helpers.ts'
+import { getCountryFlag } from '../../types/index.ts'
 import type { MemberProfile } from '../../types/index.ts'
 
 interface ApplicantTableProps {
@@ -77,7 +78,7 @@ export const ApplicantTable = ({ applicants, onApprove, onReject, onEdit }: Appl
               </td>
               <td className="px-4 py-4 text-sm text-astra-muted">
                 <span className="flex items-center gap-1">
-                  <Globe className="w-3 h-3 text-astra-muted" /> {applicant.nationality || '—'}
+                  <Globe className="w-3 h-3 text-astra-muted" /> {applicant.nationality ? `${getCountryFlag(applicant.nationality)} ${applicant.nationality}` : '—'}
                 </span>
               </td>
               <td className="px-4 py-4 text-sm text-astra-muted">

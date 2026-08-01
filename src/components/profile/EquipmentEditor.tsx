@@ -79,32 +79,17 @@ export const EquipmentEditor = ({ formData, onChange }: EquipmentEditorProps) =>
 
       <div>
         <h3 className="text-xl font-semibold text-astra-text font-display mb-2">Legendary Accessories</h3>
-        <p className="text-sm text-astra-muted mb-4">Mark accessories you own with a legendary rarity.</p>
+        <p className="text-sm text-astra-muted mb-4">Click a slot to mark legendary accessories you own.</p>
 
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
           {accessorySlots.map((slot) => (
-            <div key={slot.key} className="space-y-2">
-              <EquipmentSlot
-                name={slot.key}
-                label={slot.label}
-                value={formData[slot.key] ?? false}
-                onClick={() => onChange({ ...formData, [slot.key]: !formData[slot.key] })}
-              />
-              <div className="text-center">
-                <button
-                  type="button"
-                  onClick={() => onChange({ ...formData, [slot.key]: !formData[slot.key] })}
-                  className={[
-                    'px-3 py-1.5 rounded-lg text-xs font-medium transition-all border',
-                    formData[slot.key]
-                      ? 'bg-astra-accent/10 border-astra-accent/30 text-astra-accent'
-                      : 'bg-astra-bg/40 border-slate-500/20 text-astra-muted/60',
-                  ].join(' ')}
-                >
-                  {formData[slot.key] ? 'Owned' : 'Missing'}
-                </button>
-              </div>
-            </div>
+            <EquipmentSlot
+              key={slot.key}
+              name={slot.key}
+              label={slot.label}
+              value={formData[slot.key] ?? false}
+              onClick={() => onChange({ ...formData, [slot.key]: !formData[slot.key] })}
+            />
           ))}
         </div>
       </div>

@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react'
-import { X, Save, Crown, User, Upload, Loader2, UserPlus } from 'lucide-react'
+import { X, Save, Crown, User, UserPlus } from 'lucide-react'
 import { Modal } from '../ui/Modal.tsx'
 import { Input } from '../ui/Input.tsx'
+import { CountrySelect } from '../ui/CountrySelect.tsx'
 import { GlowButton } from '../ui/GlowButton.tsx'
 import { Avatar } from '../ui/Avatar.tsx'
 import { EquipmentEditor } from '../profile/EquipmentEditor.tsx'
-import { uploadAvatar } from '../../services/storageService.ts'
-import { updateMemberAvatar } from '../../services/userService.ts'
 import type { MemberProfile, MemberFormData, UserRole } from '../../types/index.ts'
 
 interface MemberQuickEditProps {
@@ -39,38 +38,20 @@ const initialFormData = (member: MemberProfile | null): MemberFormData => ({
 export const MemberQuickEdit = ({ member, isOpen, onClose, onSave, isAdmin, isLoading }: MemberQuickEditProps) => {
   const [formData, setFormData] = useState<MemberFormData>(initialFormData(member))
   const [role, setRole] = useState<UserRole>('member')
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
-  const [uploading, setUploading] = useState(false)
 
   useEffect(() => {
     if (member) {
       setFormData(initialFormData(member))
       setRole(member.role)
-      setAvatarUrl(member.avatar || null)
     }
   }, [member])
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
       [name]: name === 'combatPower' || name === 'level' ? parseInt(value) || 0 : value,
     }))
-  }
-
-  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file || !member) return
-    setUploading(true)
-    try {
-      const url = await uploadAvatar(member.uid, file)
-      await updateMemberAvatar(member.uid, url)
-      setAvatarUrl(url)
-    } catch (err) {
-      console.error('Avatar upload failed', err)
-    } finally {
-      setUploading(false)
-    }
   }
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -85,19 +66,7 @@ export const MemberQuickEdit = ({ member, isOpen, onClose, onSave, isAdmin, isLo
     <Modal isOpen={isOpen} onClose={onClose} title={member.role === 'applicant' ? 'Review Applicant' : 'Edit Member'} size="lg">
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="flex flex-col sm:flex-row items-center gap-6">
-          <div className="relative">
-            <Avatar src={avatarUrl} name={formData.ign} size="lg" glow />
-            {isAdmin && (
-              <label className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-astra-primary flex items-center justify-center cursor-pointer hover:bg-astra-secondary transition-colors shadow-lg">
-                {uploading ? (
-                  <Loader2 className="w-4 h-4 text-white animate-spin" />
-                ) : (
-                  <Upload className="w-4 h-4 text-white" />
-                )}
-                <input type="file" accept="image/*" className="hidden" onChange={handleAvatarUpload} />
-              </label>
-            )}
-          </div>
+          <Avatar src={member.avatar} name={formData.ign} size="lg" glow />
           <div className="text-center sm:text-left">
             <h3 className="text-2xl font-bold text-astra-text font-display">{formData.ign}</h3>
             <p className="text-astra-muted text-sm">{member.email}</p>
@@ -110,7 +79,10 @@ export const MemberQuickEdit = ({ member, isOpen, onClose, onSave, isAdmin, isLo
           <Input label="Discord Name" name="discordName" value={formData.discordName} onChange={handleChange} required />
           <Input label="Combat Power" name="combatPower" type="number" value={formData.combatPower} onChange={handleChange} required />
           <Input label="Level" name="level" type="number" value={formData.level} onChange={handleChange} required />
-          <Input label="Nationality" name="nationality" value={formData.nationality} onChange={handleChange} />
+          <CountrySelect
+            value={formData.nationality}
+            onChange={(value) => setFormData((prev) => ({ ...prev, nationality: value }))}
+          />
           <Input label="Server" name="server" value={formData.server} onChange={handleChange} />
           {isAdmin && (
             <div className="sm:col-span-2">

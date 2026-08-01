@@ -52,12 +52,12 @@ export const EquipmentSlot = ({ name, label, value, rarity, onClick, readOnly = 
 
   return (
     <motion.div
-      whileHover={!readOnly ? { scale: 1.05, y: -4 } : undefined}
+      whileHover={!readOnly ? { scale: 1.02, y: -2 } : undefined}
       whileTap={!readOnly ? { scale: 0.98 } : undefined}
       onClick={onClick}
       className={[
         'relative group flex flex-col items-center justify-center gap-2',
-        'w-full aspect-square rounded-xl border-2 bg-astra-bg/40',
+        'w-full min-h-[120px] rounded-xl border-2 bg-astra-bg/40 p-4',
         'cursor-pointer transition-all duration-300',
         isAccessory
           ? hasBoolValue
@@ -70,16 +70,18 @@ export const EquipmentSlot = ({ name, label, value, rarity, onClick, readOnly = 
       ].join(' ')}
     >
       {isAccessory ? (
-        <div className="flex flex-col items-center gap-1 z-10">
-          <Icon className={['w-6 h-6 transition-colors', hasBoolValue ? 'text-astra-accent' : 'text-astra-muted/40'].join(' ')} />
-          {hasBoolValue ? (
-            <CircleCheck className="w-4 h-4 text-astra-accent absolute top-2 right-2" />
-          ) : (
-            <Circle className="w-4 h-4 text-slate-600 absolute top-2 right-2" />
-          )}
-          <div className="text-center px-2">
-            <p className="text-[10px] uppercase tracking-wider text-astra-muted/70 mb-0.5">{label}</p>
-            <p className={['text-xs font-medium', hasBoolValue ? 'text-astra-accent' : 'text-astra-muted/50'].join(' ')}>
+        <div className="flex flex-col items-center gap-2 z-10 w-full">
+          <div className="flex items-center justify-between w-full">
+            <Icon className={['w-6 h-6 transition-colors', hasBoolValue ? 'text-astra-accent' : 'text-astra-muted/40'].join(' ')} />
+            {hasBoolValue ? (
+              <CircleCheck className="w-5 h-5 text-astra-accent" />
+            ) : (
+              <Circle className="w-5 h-5 text-slate-600" />
+            )}
+          </div>
+          <div className="text-center w-full">
+            <p className="text-[11px] uppercase tracking-wider text-astra-muted/70 mb-1">{label}</p>
+            <p className={['text-sm font-medium', hasBoolValue ? 'text-astra-accent' : 'text-astra-muted/50'].join(' ')}>
               {hasBoolValue ? 'Owned' : 'Missing'}
             </p>
           </div>
@@ -96,9 +98,9 @@ export const EquipmentSlot = ({ name, label, value, rarity, onClick, readOnly = 
           ].join(' ')}
           />
           <Icon className={['w-6 h-6 transition-colors', hasStringValue ? 'text-astra-primary' : 'text-astra-muted/40'].join(' ')} />
-          <div className="text-center px-2 z-10">
-            <p className="text-[10px] uppercase tracking-wider text-astra-muted/70 mb-0.5">{label}</p>
-            <p className={['text-xs font-medium truncate max-w-full', hasStringValue ? 'text-astra-text' : 'text-astra-muted/50'].join(' ')}>
+          <div className="text-center w-full z-10">
+            <p className="text-[11px] uppercase tracking-wider text-astra-muted/70 mb-1">{label}</p>
+            <p className={['text-sm font-medium break-words leading-tight', hasStringValue ? 'text-astra-text' : 'text-astra-muted/50'].join(' ')}>
               {hasStringValue ? (value as string) : 'Empty'}
             </p>
           </div>

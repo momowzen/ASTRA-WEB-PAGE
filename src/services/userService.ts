@@ -125,14 +125,6 @@ export const updateMemberProfile = async (
   return profileConverter.fromFirestore(updated)
 }
 
-export const updateMemberAvatar = async (uid: string, avatarUrl: string): Promise<void> => {
-  const docRef = doc(db, USERS_COLLECTION, uid)
-  await updateDoc(docRef, {
-    avatar: avatarUrl,
-    updatedAt: new Date().toISOString(),
-  })
-}
-
 export const deleteMember = async (uid: string): Promise<void> => {
   await deleteDoc(doc(db, USERS_COLLECTION, uid))
 }

@@ -44,6 +44,24 @@ const AdminRoute = () => {
   return <Outlet />
 }
 
+const MemberRoute = () => {
+  const { isAuthenticated, isMember, isLoading } = useAuth()
+
+  if (isLoading) {
+    return <LoadingSpinner fullScreen message="Verifying access..." />
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />
+  }
+
+  if (!isMember) {
+    return <Navigate to="/" replace />
+  }
+
+  return <Outlet />
+}
+
 function App() {
   return (
     <Routes>
@@ -54,8 +72,10 @@ function App() {
       <Route path="/hidden-class" element={<HiddenClassPage />} />
       <Route path="/about" element={<AboutPage />} />
       <Route element={<ProtectedRoute />}>
-        <Route path="/members" element={<MembersPage />} />
         <Route path="/profile" element={<ProfilePage />} />
+      </Route>
+      <Route element={<MemberRoute />}>
+        <Route path="/members" element={<MembersPage />} />
       </Route>
       <Route element={<AdminRoute />}>
         <Route path="/admin" element={<AdminDashboard />} />

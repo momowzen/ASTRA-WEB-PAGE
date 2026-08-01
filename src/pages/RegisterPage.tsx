@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { Link, useNavigate, Navigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Mail, Lock, User as UserIcon, MessageCircle, Sparkles, AlertCircle, Sword, Globe, Server, Gauge, BarChart3 } from 'lucide-react'
+import { Mail, Lock, User as UserIcon, MessageCircle, Sparkles, AlertCircle, Sword, Server, Gauge, BarChart3 } from 'lucide-react'
 import { ParticleBackground } from '../components/layout/ParticleBackground.tsx'
 import { Navbar } from '../components/layout/Navbar.tsx'
 import { Footer } from '../components/layout/Footer.tsx'
 import { GlassCard } from '../components/ui/GlassCard.tsx'
 import { Input } from '../components/ui/Input.tsx'
+import { CountrySelect } from '../components/ui/CountrySelect.tsx'
 import { GlowButton } from '../components/ui/GlowButton.tsx'
 import { registerUser } from '../services/authService.ts'
 import { createApplicantProfile } from '../services/userService.ts'
@@ -178,13 +179,9 @@ export const RegisterPage = () => {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <Input
-                  label="Nationality"
-                  name="nationality"
+                <CountrySelect
                   value={formData.nationality}
-                  onChange={handleChange}
-                  placeholder="Your nationality"
-                  icon={<Globe className="w-5 h-5" />}
+                  onChange={(value) => setFormData((prev) => ({ ...prev, nationality: value }))}
                   required
                 />
                 <Input

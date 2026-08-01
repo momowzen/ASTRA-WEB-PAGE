@@ -10,6 +10,8 @@ interface AuthContextValue {
   isLoading: boolean
   isAuthenticated: boolean
   isAdmin: boolean
+  isMember: boolean
+  isApplicant: boolean
   authError: string | null
   refreshProfile: () => Promise<void>
 }
@@ -84,6 +86,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     isLoading,
     isAuthenticated: !!user,
     isAdmin: profile?.role === 'admin',
+    isMember: profile?.role === 'member' || profile?.role === 'admin',
+    isApplicant: profile?.role === 'applicant',
     authError,
     refreshProfile,
   }

@@ -14,7 +14,7 @@ const roleLabel = (role?: UserRole): string => {
 }
 
 export const Navbar = () => {
-  const { profile, isAuthenticated, isAdmin, isLoading } = useAuth()
+  const { profile, isAuthenticated, isAdmin, isMember, isLoading } = useAuth()
   const scrolled = useScrollHeader(50)
   const [mobileOpen, setMobileOpen] = useState(false)
   const location = useLocation()
@@ -27,7 +27,7 @@ export const Navbar = () => {
 
   const navLinks = [
     { path: '/', label: 'Home', icon: Home },
-    ...(isAuthenticated ? [{ path: '/members', label: 'Members', icon: Users }] : []),
+    ...(isMember ? [{ path: '/members', label: 'Members', icon: Users }] : []),
     { path: '/boss-tracker', label: 'Boss Tracker', icon: ShieldCheck },
     { path: '/hidden-class', label: 'Hidden Class', icon: SparklesIcon },
     { path: '/about', label: 'About', icon: Info },

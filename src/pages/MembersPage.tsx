@@ -10,6 +10,7 @@ import { useUsers } from '../hooks/useUsers.ts'
 import { useDebounce } from '../hooks/useDebounce.ts'
 import { useState } from 'react'
 import { formatNumber } from '../utils/helpers.ts'
+import { getCountryFlag } from '../types/index.ts'
 
 export const MembersPage = () => {
   const { members, loading, error } = useUsers()
@@ -93,7 +94,9 @@ export const MembersPage = () => {
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-xs text-astra-muted uppercase tracking-wider">Nationality</span>
-                      <span className="text-astra-text text-sm truncate max-w-[120px]">{member.nationality || '—'}</span>
+                      <span className="text-astra-text text-sm truncate max-w-[120px]">
+                        {member.nationality ? `${getCountryFlag(member.nationality)} ${member.nationality}` : '—'}
+                      </span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-xs text-astra-muted uppercase tracking-wider">Server</span>

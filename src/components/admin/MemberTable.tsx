@@ -5,6 +5,7 @@ import { Avatar } from '../ui/Avatar.tsx'
 import { GlowButton } from '../ui/GlowButton.tsx'
 import { useDebounce } from '../../hooks/useDebounce.ts'
 import { formatNumber, formatDate } from '../../utils/helpers.ts'
+import { getCountryFlag } from '../../types/index.ts'
 import type { MemberProfile, MemberSortField, SortDirection, UserRole } from '../../types/index.ts'
 
 interface MemberTableProps {
@@ -225,7 +226,7 @@ export const MemberTable = ({ members, onEdit, onDelete, currentUserId, isAdmin 
                       <span className="text-sm text-astra-muted">{member.mainWeapon || '—'}</span>
                     </td>
                     <td className="px-4 py-4">
-                      <span className="text-sm text-astra-muted">{member.nationality || '—'}</span>
+                      <span className="text-sm text-astra-muted">{member.nationality ? `${getCountryFlag(member.nationality)} ${member.nationality}` : '—'}</span>
                     </td>
                     <td className="px-4 py-4 text-sm text-astra-muted">{formatDate(member.updatedAt)}</td>
                     <td className="px-4 py-4">
