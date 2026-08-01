@@ -49,6 +49,7 @@ export const ProfilePage = () => {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [activeTab, setActiveTab] = useState<'overview' | 'equipment'>('overview')
+  const [editTab, setEditTab] = useState<'basic' | 'equipment' | 'notes'>('basic')
   const [editForm, setEditForm] = useState<MemberFormData>({
     ign: '',
     discordName: '',
@@ -198,15 +199,53 @@ export const ProfilePage = () => {
                     </div>
                   </div>
 
-                  <ProfileForm formData={editForm} onChange={setEditForm} />
-
-                  <div className="mt-10 pt-8 border-t border-astra-primary/10">
-                    <div className="flex items-center gap-2 mb-6">
-                      <div className="w-1 h-6 rounded-full bg-gradient-to-b from-astra-accent to-astra-primary" />
-                      <h3 className="text-lg font-semibold text-astra-text font-display">Equipment</h3>
-                    </div>
-                    <EquipmentEditor formData={editForm} onChange={setEditForm} />
+                  {/* Tabs */}
+                  <div className="flex items-center gap-2 mb-8 p-1 rounded-xl bg-astra-bg/60 border border-astra-primary/10 w-fit">
+                    {(['basic', 'equipment', 'notes'] as const).map((tab) => (
+                      <button
+                        key={tab}
+                        type="button"
+                        onClick={() => setEditTab(tab)}
+                        className={[
+                          'px-4 py-2 rounded-lg text-sm font-medium transition-all capitalize',
+                          editTab === tab
+                            ? 'bg-astra-primary/10 text-astra-primary border border-astra-primary/30'
+                            : 'text-astra-muted hover:text-astra-text hover:bg-astra-primary/5',
+                        ].join(' ')}
+                      >
+                        {tab === 'basic' ? 'Basic Info' : tab}
+                      </button>
+                    ))}
                   </div>
+
+                  {editTab === 'basic' && <ProfileForm formData={editForm} onChange={setEditForm} />}
+
+                  {editTab === 'equipment' && (
+                    <div>
+                      <div className="flex items-center gap-2 mb-6">
+                        <div className="w-1 h-6 rounded-full bg-gradient-to-b from-astra-accent to-astra-primary" />
+                        <h3 className="text-lg font-semibold text-astra-text font-display">Equipment</h3>
+                      </div>
+                      <EquipmentEditor formData={editForm} onChange={setEditForm} />
+                    </div>
+                  )}
+
+                  {editTab === 'notes' && (
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 mb-4">
+                        <div className="w-1 h-6 rounded-full bg-gradient-to-b from-astra-secondary to-astra-accent" />
+                        <h3 className="text-lg font-semibold text-astra-text font-display">Notes</h3>
+                      </div>
+                      <textarea
+                        name="notes"
+                        value={editForm.notes}
+                        onChange={(e) => setEditForm({ ...editForm, notes: e.target.value })}
+                        rows={6}
+                        className="w-full bg-astra-bg/60 border border-astra-primary/20 rounded-lg text-astra-text placeholder:text-astra-muted/60 focus:border-astra-primary/60 focus:ring-2 focus:ring-astra-primary/20 transition-all duration-300 outline-none px-4 py-3 resize-none"
+                        placeholder="Additional notes about your character, availability, or goals..."
+                      />
+                    </div>
+                  )}
 
                   {/* Bottom actions */}
                   <div className="flex items-center justify-end gap-3 mt-10 pt-6 border-t border-astra-primary/10">
