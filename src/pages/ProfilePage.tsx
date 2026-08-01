@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Edit, Sparkles, Shield, Calendar, MessageCircle } from 'lucide-react'
+import { Edit, Sparkles, Shield, Calendar, MessageCircle, X, Save } from 'lucide-react'
 import { ParticleBackground } from '../components/layout/ParticleBackground.tsx'
 import { Navbar } from '../components/layout/Navbar.tsx'
 import { Footer } from '../components/layout/Footer.tsx'
@@ -165,23 +165,69 @@ export const ProfilePage = () => {
 
           {isEditing ? (
             <div className="max-w-5xl mx-auto">
-              <GlassCard>
-                {error && (
-                  <div className="mb-6 p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
-                    {error}
+              <form onSubmit={handleSave}>
+                <GlassCard>
+                  {error && (
+                    <div className="mb-6 p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+                      {error}
+                    </div>
+                  )}
+
+                  {/* Header with actions */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-astra-primary/10">
+                    <div>
+                      <h2 className="text-2xl font-bold text-astra-text font-display">Edit Profile</h2>
+                      <p className="text-sm text-astra-muted mt-1">Update your character details and equipment.</p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <GlowButton
+                        type="button"
+                        variant="outline"
+                        onClick={() => setIsEditing(false)}
+                        icon={<X className="w-4 h-4" />}
+                      >
+                        Cancel
+                      </GlowButton>
+                      <GlowButton
+                        type="submit"
+                        loading={saving}
+                        icon={<Save className="w-4 h-4" />}
+                      >
+                        Save Changes
+                      </GlowButton>
+                    </div>
                   </div>
-                )}
-                <ProfileForm
-                  formData={editForm}
-                  onChange={setEditForm}
-                  onSubmit={handleSave}
-                  isLoading={saving}
-                />
-                <div className="mt-8 pt-8 border-t border-astra-primary/10">
-                  <h3 className="text-xl font-semibold text-astra-text font-display mb-6">Equipment</h3>
-                  <EquipmentEditor formData={editForm} onChange={setEditForm} />
-                </div>
-              </GlassCard>
+
+                  <ProfileForm formData={editForm} onChange={setEditForm} />
+
+                  <div className="mt-10 pt-8 border-t border-astra-primary/10">
+                    <div className="flex items-center gap-2 mb-6">
+                      <div className="w-1 h-6 rounded-full bg-gradient-to-b from-astra-accent to-astra-primary" />
+                      <h3 className="text-lg font-semibold text-astra-text font-display">Equipment</h3>
+                    </div>
+                    <EquipmentEditor formData={editForm} onChange={setEditForm} />
+                  </div>
+
+                  {/* Bottom actions */}
+                  <div className="flex items-center justify-end gap-3 mt-10 pt-6 border-t border-astra-primary/10">
+                    <GlowButton
+                      type="button"
+                      variant="outline"
+                      onClick={() => setIsEditing(false)}
+                      icon={<X className="w-4 h-4" />}
+                    >
+                      Cancel
+                    </GlowButton>
+                    <GlowButton
+                      type="submit"
+                      loading={saving}
+                      icon={<Save className="w-4 h-4" />}
+                    >
+                      Save Changes
+                    </GlowButton>
+                  </div>
+                </GlassCard>
+              </form>
             </div>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
