@@ -8,10 +8,9 @@ import type { Language, BossTimers } from '../../data/astraViewer.ts'
 interface NextSpawnProps {
   lang: Language
   timers: BossTimers
-  online: boolean
 }
 
-export const NextSpawn = ({ lang, timers, online }: NextSpawnProps) => {
+export const NextSpawn = ({ lang, timers }: NextSpawnProps) => {
   const [, setTick] = useState(0)
   const next = getNextSpawn(timers)
   const bossName = next ? getBossName(next.boss, lang) : 'None'
@@ -75,17 +74,6 @@ export const NextSpawn = ({ lang, timers, online }: NextSpawnProps) => {
         </div>
       </div>
 
-      <div className="absolute top-4 right-4 flex items-center gap-2">
-        <span
-          className={[
-            'w-2 h-2 rounded-full',
-            online ? 'bg-emerald-400 animate-pulse' : 'bg-red-400',
-          ].join(' ')}
-        />
-        <span className="text-xs text-astra-muted uppercase tracking-wider">
-          {online ? 'Live' : 'Offline'}
-        </span>
-      </div>
     </motion.div>
   )
 }

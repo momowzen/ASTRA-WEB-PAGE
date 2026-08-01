@@ -77,6 +77,7 @@ export const ProfilePage = () => {
   const startEditing = () => {
     if (profile) {
       setEditForm(createInitialFormData(profile))
+      setEditTab('basic')
       setIsEditing(true)
     }
   }
@@ -199,28 +200,29 @@ export const ProfilePage = () => {
                     </div>
                   </div>
 
-                  {/* Tabs */}
-                  <div className="flex items-center gap-2 mb-8 p-1 rounded-xl bg-astra-bg/60 border border-astra-primary/10 w-fit">
-                    {(['basic', 'equipment', 'notes'] as const).map((tab) => (
-                      <button
-                        key={tab}
-                        type="button"
-                        onClick={() => setEditTab(tab)}
-                        className={[
-                          'px-4 py-2 rounded-lg text-sm font-medium transition-all capitalize',
-                          editTab === tab
-                            ? 'bg-astra-primary/10 text-astra-primary border border-astra-primary/30'
-                            : 'text-astra-muted hover:text-astra-text hover:bg-astra-primary/5',
-                        ].join(' ')}
-                      >
-                        {tab === 'basic' ? 'Basic Info' : tab}
-                      </button>
-                    ))}
-                  </div>
+                  {profile.role !== 'applicant' && (
+                    <div className="flex items-center gap-2 mb-8 p-1 rounded-xl bg-astra-bg/60 border border-astra-primary/10 w-fit">
+                      {(['basic', 'equipment', 'notes'] as const).map((tab) => (
+                        <button
+                          key={tab}
+                          type="button"
+                          onClick={() => setEditTab(tab)}
+                          className={[
+                            'px-4 py-2 rounded-lg text-sm font-medium transition-all capitalize',
+                            editTab === tab
+                              ? 'bg-astra-primary/10 text-astra-primary border border-astra-primary/30'
+                              : 'text-astra-muted hover:text-astra-text hover:bg-astra-primary/5',
+                          ].join(' ')}
+                        >
+                          {tab === 'basic' ? 'Basic Info' : tab}
+                        </button>
+                      ))}
+                    </div>
+                  )}
 
                   {editTab === 'basic' && <ProfileForm formData={editForm} onChange={setEditForm} />}
 
-                  {editTab === 'equipment' && (
+                  {editTab === 'equipment' && profile.role !== 'applicant' && (
                     <div>
                       <div className="flex items-center gap-2 mb-6">
                         <div className="w-1 h-6 rounded-full bg-gradient-to-b from-astra-accent to-astra-primary" />
@@ -230,7 +232,7 @@ export const ProfilePage = () => {
                     </div>
                   )}
 
-                  {editTab === 'notes' && (
+                  {editTab === 'notes' && profile.role !== 'applicant' && (
                     <div className="space-y-2">
                       <div className="flex items-center gap-2 mb-4">
                         <div className="w-1 h-6 rounded-full bg-gradient-to-b from-astra-secondary to-astra-accent" />
@@ -304,57 +306,77 @@ export const ProfilePage = () => {
                 </GlassCard>
               </div>
 
-              <div className="lg:col-span-2 space-y-8">
-                <GlassCard glow className="text-center py-12">
-                  <p className="text-sm uppercase tracking-[0.3em] text-astra-muted mb-2">Combat Power</p>
-                  <div className="text-6xl sm:text-7xl font-bold text-astra-text font-display text-glow">
-                    <AnimatedCounter value={profile.combatPower || 0} />
-                  </div>
-                </GlassCard>
-
-                <GlassCard>
-                  <div className="flex items-center gap-4 mb-6">
-                    <button
-                      onClick={() => setActiveTab('overview')}
-                      className={[
-                        'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
-                        activeTab === 'overview' ? 'bg-astra-primary/10 text-astra-primary' : 'text-astra-muted hover:text-astra-text',
-                      ].join(' ')}
-                    >
-                      Overview
-                    </button>
-                    <button
-                      onClick={() => setActiveTab('equipment')}
-                      className={[
-                        'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
-                        activeTab === 'equipment' ? 'bg-astra-primary/10 text-astra-primary' : 'text-astra-muted hover:text-astra-text',
-                      ].join(' ')}
-                    >
-                      Equipment
-                    </button>
-                  </div>
-
-                  {activeTab === 'overview' ? (
-                    <div className="space-y-4">
-                      <h3 className="text-xl font-semibold text-astra-text font-display mb-4">Notes</h3>
-                      <p className="text-astra-muted leading-relaxed whitespace-pre-wrap">
-                        {profile.notes || 'No notes added yet.'}
-                      </p>
+              {profile.role !== 'applicant' && (
+                <div className="lg:col-span-2 space-y-8">
+                  <GlassCard glow className="text-center py-12">
+                    <p className="text-sm uppercase tracking-[0.3em] text-astra-muted mb-2">Combat Power</p>
+                    <div className="text-6xl sm:text-7xl font-bold text-astra-text font-display text-glow">
+                      <AnimatedCounter value={profile.combatPower || 0} />
                     </div>
-                  ) : (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                      <EquipmentSlot name="mainWeapon" label="Main Weapon" value={profile.mainWeapon} readOnly />
-                      <EquipmentSlot name="subWeapon" label="Sub Weapon" value={profile.subWeapon} readOnly />
-                      <EquipmentSlot name="armor" label="Armor" value={profile.armor} readOnly />
-                      <EquipmentSlot name="necklace" label="Necklace" value={profile.necklace} readOnly />
-                      <EquipmentSlot name="ring" label="Ring" value={profile.ring} readOnly />
-                      <EquipmentSlot name="earring" label="Earring" value={profile.earring} readOnly />
-                      <EquipmentSlot name="bracelet" label="Bracelet" value={profile.bracelet} readOnly />
-                      <EquipmentSlot name="belt" label="Belt" value={profile.belt} readOnly />
+                  </GlassCard>
+
+                  <GlassCard>
+                    <div className="flex items-center gap-4 mb-6">
+                      <button
+                        onClick={() => setActiveTab('overview')}
+                        className={[
+                          'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
+                          activeTab === 'overview' ? 'bg-astra-primary/10 text-astra-primary' : 'text-astra-muted hover:text-astra-text',
+                        ].join(' ')}
+                      >
+                        Overview
+                      </button>
+                      <button
+                        onClick={() => setActiveTab('equipment')}
+                        className={[
+                          'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
+                          activeTab === 'equipment' ? 'bg-astra-primary/10 text-astra-primary' : 'text-astra-muted hover:text-astra-text',
+                        ].join(' ')}
+                      >
+                        Equipment
+                      </button>
                     </div>
-                  )}
-                </GlassCard>
-              </div>
+
+                    {activeTab === 'overview' ? (
+                      <div className="space-y-4">
+                        <h3 className="text-xl font-semibold text-astra-text font-display mb-4">Notes</h3>
+                        <p className="text-astra-muted leading-relaxed whitespace-pre-wrap">
+                          {profile.notes || 'No notes added yet.'}
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                        <EquipmentSlot name="mainWeapon" label="Main Weapon" value={profile.mainWeapon} readOnly />
+                        <EquipmentSlot name="subWeapon" label="Sub Weapon" value={profile.subWeapon} readOnly />
+                        <EquipmentSlot name="armor" label="Armor" value={profile.armor} readOnly />
+                        <EquipmentSlot name="necklace" label="Necklace" value={profile.necklace} readOnly />
+                        <EquipmentSlot name="ring" label="Ring" value={profile.ring} readOnly />
+                        <EquipmentSlot name="earring" label="Earring" value={profile.earring} readOnly />
+                        <EquipmentSlot name="bracelet" label="Bracelet" value={profile.bracelet} readOnly />
+                        <EquipmentSlot name="belt" label="Belt" value={profile.belt} readOnly />
+                      </div>
+                    )}
+                  </GlassCard>
+                </div>
+              )}
+
+              {profile.role === 'applicant' && (
+                <div className="lg:col-span-2">
+                  <GlassCard className="bg-astra-primary/5 border-astra-primary/20">
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 rounded-lg bg-astra-primary/10 flex items-center justify-center shrink-0">
+                        <Sparkles className="w-5 h-5 text-astra-primary" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-semibold text-astra-text font-display mb-1">Application Pending</h3>
+                        <p className="text-astra-muted text-sm leading-relaxed">
+                          Your application is under review. Only basic information is available until an admin approves your membership.
+                        </p>
+                      </div>
+                    </div>
+                  </GlassCard>
+                </div>
+              )}
             </div>
           )}
         </div>

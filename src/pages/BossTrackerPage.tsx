@@ -55,7 +55,7 @@ export const BossTrackerPage = () => {
 
           {/* Next spawn banner */}
           <div className="mb-6">
-            <NextSpawn lang={lang} timers={timers} online={online} />
+            <NextSpawn lang={lang} timers={timers} />
           </div>
 
           {/* Main grid */}
