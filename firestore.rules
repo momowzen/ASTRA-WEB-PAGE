@@ -20,7 +20,7 @@ service cloud.firestore {
         'mainWeapon', 'subWeapon', 'armor',
         'necklace', 'ring', 'earring', 'bracelet', 'belt',
         'combatPower', 'level', 'nationality', 'server', 'notes',
-        'createdAt', 'updatedAt', 'avatar'])
+        'createdAt', 'updatedAt', 'avatar', 'class'])
         && user.role is string;
     }
 
