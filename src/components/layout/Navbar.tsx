@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Sparkles, User, LogIn, LogOut, UserPlus, Shield, Home, Users, Info } from 'lucide-react'
+import { Menu, X, Sparkles, User, LogIn, LogOut, UserPlus, Shield, Home, Users, Info, ShieldCheck, SparklesIcon } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth.ts'
 import { useScrollHeader } from '../../hooks/useScrollHeader.ts'
 import { signOut } from '../../services/authService.ts'
@@ -21,6 +21,8 @@ export const Navbar = () => {
   const navLinks = [
     { path: '/', label: 'Home', icon: Home },
     { path: '/members', label: 'Members', icon: Users },
+    { path: '/boss-tracker', label: 'Boss Tracker', icon: ShieldCheck },
+    { path: '/hidden-class', label: 'Hidden Class', icon: SparklesIcon },
     { path: '/about', label: 'About', icon: Info },
     ...(isAuthenticated ? [{ path: '/profile', label: 'Profile', icon: User }] : []),
     ...(isAdmin ? [{ path: '/admin', label: 'Admin', icon: Shield }] : []),

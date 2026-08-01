@@ -6,6 +6,8 @@ import { ProfilePage } from './pages/ProfilePage.tsx'
 import { AdminDashboard } from './pages/AdminDashboard.tsx'
 import { MembersPage } from './pages/MembersPage.tsx'
 import { AboutPage } from './pages/AboutPage.tsx'
+import { BossTrackerPage } from './pages/BossTrackerPage.tsx'
+import { HiddenClassPage } from './pages/HiddenClassPage.tsx'
 import { NotFoundPage } from './pages/NotFoundPage.tsx'
 import { LoadingSpinner } from './components/ui/LoadingSpinner.tsx'
 import { useAuth } from './hooks/useAuth.ts'
@@ -49,6 +51,8 @@ function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/members" element={<MembersPage />} />
+      <Route path="/boss-tracker" element={<BossTrackerPage />} />
+      <Route path="/hidden-class" element={<HiddenClassPage />} />
       <Route path="/about" element={<AboutPage />} />
       <Route element={<ProtectedRoute />}>
         <Route path="/profile" element={<ProfilePage />} />
